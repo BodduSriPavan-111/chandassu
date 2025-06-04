@@ -1,3 +1,5 @@
+from .dictionary import lg_map
+
 class Varnamala:
 
     def __init__( self ):
@@ -53,8 +55,6 @@ class Varnamala:
                         'ళ': ['ళ','ళా','ళి','ళీ','ళు','ళూ','ళృ','ళౄ','ళె','ళే','ళై','ళొ','ళో','ళౌ','ళం','ళః']
                         }
 
-        self.singular= ["ి","ు","ృ","ె","ై","ొ","ౌ","ಂ","ಃ"]
-        self.plural= ["ా","ీ","ూ","ౄ","ే","ై","ో","ౌ","ಂ","ಃ"]
 
     def varnamala_map( self, to_num= True ):
 
