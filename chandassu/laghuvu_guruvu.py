@@ -22,7 +22,7 @@ class LaghuvuGuruvu:
                 # text.append( l[index] )
                 pass
 
-            elif l[index].endswith('్') and temp == "" and not l[index+1].isspace():
+            elif l[index].endswith('్') and temp == "" and index< len(l)-1 and not l[index+1].isspace():
                 temp+= l[index]
 
             elif (not l[index].endswith('్')) and temp != "":
@@ -44,8 +44,7 @@ class LaghuvuGuruvu:
 
     def generate( self ):
 
-        l= list( self.split_by_letter() )
-
+        l= self.split_by_letter()
         print(l)
 
         marking= []
@@ -77,8 +76,6 @@ class LaghuvuGuruvu:
 
             else:
                 print("Unhandled Condition")
-            
-            print( marking )
         
         # Not dict because dict donot allow multiple keys with same name
         return list(zip(l, marking))
