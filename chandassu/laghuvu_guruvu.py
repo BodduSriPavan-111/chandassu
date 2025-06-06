@@ -18,7 +18,11 @@ class LaghuvuGuruvu:
 
         for index in range( len(l) ):
 
-            if l[index].endswith('్') and temp == "":
+            if l[index].isspace() or l[index] in list("""` ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ | ; : ' " , < > . / ?"""):
+                # text.append( l[index] )
+                pass
+
+            elif l[index].endswith('్') and temp == "" and not l[index+1].isspace():
                 temp+= l[index]
 
             elif (not l[index].endswith('్')) and temp != "":
@@ -29,6 +33,9 @@ class LaghuvuGuruvu:
                 text.append( l[index] )
                 temp= ""
             
+            elif l[index].endswith('్') and (index+1 == len(l) or l[index+1].isspace() ):
+                text[-1]+= l[index]
+
             else:
                 print("Unknown Case (for future purpose) !")
 
@@ -39,34 +46,39 @@ class LaghuvuGuruvu:
 
         l= list( self.split_by_letter() )
 
+        print(l)
+
         marking= []
 
-        for i in range( len(l) ):
+        for index in range( len(l) ):
 
-            if l[i].isspace():
-                marking.append( l[i] )
+            if index < len(l)-1 :
 
-            if i < len(l)-1 :
-                if 'ద' in l[i+1] and 'ర' in l[i+1]:
-                    marking.append( "|" )
-                    continue
+                if 'ద' in l[index+1] and 'ర' in l[index+1]:
+                    marking.append( lg_map[l[index][-1]] )
+
                 else:
                     count= 0
-                    for j in list(l[i+1]):
+                    for j in list(l[index+1]):
                         if j in varnamala:
                             count+= 1
 
-                    if count > 1:
+                    if count > 1 and not l[index+1].endswith('్'):
                         marking.append( "U" )
-                        continue
-            
-            if l[i][-1] in gunintha_chihnam:
-                marking.append( lg_map[l[i][-1]] )
+                    
+                    elif count > 1 and l[index+1].endswith('్'):
+                        marking.append( lg_map[l[index][-1]] )
 
-            elif l[i][-1] not in gunintha_chihnam and l[i][-1] in varnamala:
-                marking.append( lg_map[l[i][-1]] )
+                    else:
+                        marking.append( lg_map[l[index][-1]] )
             
-            elif l[i] in varnamala:
-                marking.append( lg_map[l[i]] )
+            elif l[index][-1] in lg_map:
+                marking.append( lg_map[l[index][-1]] )
+
+            else:
+                print("Unhandled Condition")
             
-        return dict(zip(l, marking))
+            print( marking )
+        
+        # Not dict because dict donot allow multiple keys with same name
+        return list(zip(l, marking))
