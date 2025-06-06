@@ -1,0 +1,3 @@
+tetageethi= {}
+aataveladi= {}
+seesam= {}

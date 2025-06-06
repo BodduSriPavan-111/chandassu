@@ -1,0 +1,3 @@
+kandam= {}
+
+dwipada= {}
