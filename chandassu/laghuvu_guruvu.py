@@ -1,5 +1,5 @@
 import regex as re
-from .dictionary import lg_map, varnamala, gunintha_chihnam
+from .nidhi import lg_map, varnamala, gunintha_chihnam
 
 class LaghuvuGuruvu:
 

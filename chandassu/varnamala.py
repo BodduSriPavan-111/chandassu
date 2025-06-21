@@ -1,4 +1,4 @@
-from .dictionary import lg_map
+from .nidhi import lg_map
 
 class Varnamala:
 
