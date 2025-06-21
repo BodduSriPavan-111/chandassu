@@ -1,5 +1,14 @@
+"""
+Module: lakshanam.py
+Description: Contains functions to check lakshanamulu (constraints/ features) of padyam
+Author: Boddu Sri Pavan
+Date: 21-06-2025
+License: MIT
+"""
+
 from .laghuvu_guruvu import LaghuvuGuruvu
 from .nidhi import varnamala, gunintha_chihnam, yati
+from .panimuttu import remove_gunintha_chihnam, extract_gunintha_chihnam, extract_aksharam
 
 def n_paadam( padyam ):
 
@@ -7,6 +16,7 @@ def n_paadam( padyam ):
 
 def n_aksharam( padyam ):
 
+    # Implements same functionality
     # n_letters= []
     # for i in p.split("\n"):
     #     lg= LaghuvuGuruvu( data= i.strip() )
