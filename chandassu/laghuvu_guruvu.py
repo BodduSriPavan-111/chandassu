@@ -37,7 +37,7 @@ class LaghuvuGuruvu:
                 text[-1]+= l[index]
 
             else:
-                print("Unknown Case (for future purpose) !")
+                print("Unknown Case (for future purpose) !\n We welcome your valuable contributions to 'chandassu' !")
 
         self.text= text
         return self.text
@@ -45,7 +45,6 @@ class LaghuvuGuruvu:
     def generate( self ):
 
         l= self.split_by_letter()
-        print(l)
 
         marking= []
 
@@ -75,7 +74,7 @@ class LaghuvuGuruvu:
                 marking.append( lg_map[l[index][-1]] )
 
             else:
-                print("Unhandled Condition")
+                print("Unknown Case (for future purpose) !\n We welcome your valuable contributions to 'chandassu' !")
         
         # Not dict because dict donot allow multiple keys with same name
         return list(zip(l, marking))

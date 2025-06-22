@@ -2,12 +2,12 @@
 Module: lakshanam.py
 Description: Contains functions to check lakshanamulu (constraints/ features) of padyam
 Author: Boddu Sri Pavan
-Date: 21-06-2025
+Date: 22-06-2025
 License: MIT
 """
 
 from .laghuvu_guruvu import LaghuvuGuruvu
-from .nidhi import varnamala, gunintha_chihnam, yati
+from .nidhi import achhulu, yati
 from .panimuttu import *
 from .ganam import ganamulu
 
@@ -67,16 +67,20 @@ def check_yati( paadam, yati_sthanam, verbose= True ):
     yati_sthanam_letter= yati_sthanam_letter.replace('ం', "")
     yati_sthanam_letter= yati_sthanam_letter.replace("ಂ", "")
 
+    if verbose:
+        print("First aksharam (letter): ", first_letter)
+        print("Yati sthana aksharam (letter): ", yati_sthanam_letter)
+
     samdit= False
     if len(extract_aksharam(first_letter))> 1:
         samdit= True
 
     if samdit:
+        
         chihnam_a= extract_gunintha_chihnam( first_letter )
         chihnam_b= extract_gunintha_chihnam( yati_sthanam_letter )
 
         chihna_yati= False
-
         for i in yati:
 
             if chihnam_a in i:
@@ -85,7 +89,8 @@ def check_yati( paadam, yati_sthanam, verbose= True ):
                     chihna_yati= True
 
                 else:
-                    print("Chihna Yathi Unmatched !", chihnam_a)
+                    if verbose:
+                        print(f"Chihna yati mismatch occurred between '{chihnam_a}' in '{first_letter}'  and '{chihnam_b}' in '{yati_sthanam_letter}'")
                     return False
 
         flag= False
@@ -102,19 +107,22 @@ def check_yati( paadam, yati_sthanam, verbose= True ):
                         if k in j:
                             flag= True
                             break
-        
+                    
+                    if not flag and verbose:
+                        print(f"Yati mismatch occurred between '{i}' in '{first_letter}' and '{yati_sthanam_letter}'")
+
         if chihna_yati and flag:
-            print( "Yathi Matched !")
+            print( "Yati Matched !")
             return True
-
-
+        
     else:
-        if len(first_letter)==1:
+        if len(first_letter)==1 and first_letter not in achhulu:
             first_letter= [first_letter]+[' ']
 
-        if len(yati_sthanam_letter)==1:
+        if len(yati_sthanam_letter)==1 and first_letter not in achhulu:
             yati_sthanam_letter= [yati_sthanam_letter]+[" "]
 
+        to_return= False
         temp= []
         for i in first_letter:
 
@@ -132,14 +140,20 @@ def check_yati( paadam, yati_sthanam, verbose= True ):
                         temp.append( True )
                     else:
                         temp.append( False )
-                        print("Yathi Unmatched !", i)
-                        return False
+                        # No break statement should be used here
+                        # Because same aksharam could be present in multiple associations
+
+                        if verbose:
+                            print(f"Yati mismatch occurred between: '{i}' in '{first_letter}' and '{yati_sthanam_letter}'")
         
         if all( temp ):
-            print( "YAthi MAtched !" )
-            return True
+            if verbose:
+                print( "Yati Matched Successfully!" )
+            to_return= True
 
-def check_prasa( padyam, index= 1 ):
+        return to_return
+
+def check_prasa( padyam, index= 1, verbose= True ):
 
     padya_paadaalu= padyam.split("\n")
 
@@ -149,20 +163,27 @@ def check_prasa( padyam, index= 1 ):
         aksharam= remove_gunintha_chihnam( LaghuvuGuruvu( data= i ).split_by_letter()[index] )
         frequency[aksharam]= frequency.get( aksharam , 0) + 1
 
-    print( frequency )
-    if len( frequency ) != 1:
-        print("Prasa Mismatch occurred !")
-        return None
-    else:
-        print("Prasa Matched Successfully !")
-        return frequency
+    if verbose:
+        print( "Frequency of second aksharam (letter): ", frequency )
+        if len( frequency ) != 1:
+            print("Prasa Mismatch Occurred !")
+        else:
+            print("Prasa Matched Successfully !")
     
-def check_vruttam_gana_kramam( padyam, lakshanam_config ):
+    return frequency
+    
+def check_vruttam_gana_kramam( padyam, lakshanam_config, verbose= True ):
     expected_match= 0
     total_match= 0
 
-    for paadam in extract_paadam( padyam= padyam ):
+    paadam_data= extract_paadam( padyam= padyam )
 
+    for index in range(len(paadam_data)):
+
+        if verbose:
+            print(f"Paadam-{index+1}\n--------")
+
+        paadam= paadam_data[index]
         lg= LaghuvuGuruvu( data= paadam ).generate()
 
         paada_gana_kramam= tuple()
@@ -174,12 +195,15 @@ def check_vruttam_gana_kramam( padyam, lakshanam_config ):
             
             if paada_gana_kramam[i]== lg[i][1]:
                 n_match+= 1
+                continue
             
-            else:
-                print(i, paada_gana_kramam[i], lg[i])
+            if verbose:
+                print(f"Ganam mismatch occurred in at {i+1}th aksharam (letter); found {lg[i]}, expected {paada_gana_kramam[i]}")
 
-        print(n_match)
         expected_match+= len(paada_gana_kramam)
         total_match+= n_match  
+
+        if verbose:
+            print(f"No.of matches in paadam-{index}: {n_match} (expected {lakshanam_config['n_aksharalu']})")
       
     return total_match, expected_match
