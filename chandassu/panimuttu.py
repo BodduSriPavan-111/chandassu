@@ -1,3 +1,11 @@
+"""
+Module: panimuttu.py
+Description: Contains utility functions for 'chandassu'
+Author: Boddu Sri Pavan
+Date: 22-06-2025
+License: MIT
+"""
+
 from .nidhi import gunintha_chihnam, varnamala
 
 def remove_gunintha_chihnam( x ):
