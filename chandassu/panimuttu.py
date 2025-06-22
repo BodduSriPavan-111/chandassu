@@ -24,3 +24,14 @@ def extract_aksharam( x ):
         if i in varnamala:
             l.append(i)
     return l
+
+def extract_paadam( padyam ):
+
+    l= []
+    for i in padyam.split("\n"):
+        
+        i= i.strip()
+        if len(i) > 0:      # Assume atleast one letter present in the padyam
+            l.append(i) 
+
+    return l

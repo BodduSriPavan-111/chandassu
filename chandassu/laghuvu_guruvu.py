@@ -53,7 +53,7 @@ class LaghuvuGuruvu:
 
             if index < len(l)-1 :
 
-                if 'ద' in l[index+1] and 'ర' in l[index+1]:
+                if ('ద' in l[index+1] and 'ర' in l[index+1]) or ('మ' in l[index+1] and 'ర' in l[index+1]):
                     marking.append( lg_map[l[index][-1]] )
 
                 else:

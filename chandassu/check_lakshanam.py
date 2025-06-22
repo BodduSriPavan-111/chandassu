@@ -8,13 +8,33 @@ License: MIT
 
 from .laghuvu_guruvu import LaghuvuGuruvu
 from .nidhi import varnamala, gunintha_chihnam, yati
-from .panimuttu import remove_gunintha_chihnam, extract_gunintha_chihnam, extract_aksharam
+from .panimuttu import *
+from .ganam import ganamulu
 
-def n_paadam( padyam ):
+def n_paadam( padyam, verbose= True ):
+    """
+    Count no.of paadams (lines) in given padyam.
+    
+    Attributes
+    ----------
+    padyam (str): Input padyam
+    verbose (str): Flag to print tracing steps
+    
+    Return
+    ------
+    n (int): Count of no.of paadams
+    """
+    
+    split_data= padyam.split("\n")
+    n= len(split_data)
 
-    return len(padyam.split("\n"))
+    if verbose:
+        print("No.of paadams (lines) found: ", n)
+        print("Paadams (lines)\n---------------\n", split_data)
+        
+    return n
 
-def n_aksharam( padyam ):
+def n_aksharam( padyam, verbose= True ):
 
     # Implements same functionality
     # n_letters= []
@@ -23,7 +43,14 @@ def n_aksharam( padyam ):
     #     n_letters.append( len(lg.split_by_letter()) )
     # return n_letters
 
-    return [ len(LaghuvuGuruvu(data= i.strip()).split_by_letter()) for i in padyam.split("\n")]
+    n= [ len(LaghuvuGuruvu(data= i.strip()).split_by_letter()) for i in padyam.split("\n")]
+
+    if verbose:
+        print("No.of aksharams (letters) in each paadam (line):")
+        for i in range(len(n)):
+            print("Paadam-",i, " :", n[i])
+
+    return n
 
 def check_yati( paadam, yati_sthanam, verbose= True ):
 
@@ -129,3 +156,30 @@ def check_prasa( padyam, index= 1 ):
     else:
         print("Prasa Matched Successfully !")
         return frequency
+    
+def check_vruttam_gana_kramam( padyam, lakshanam_config ):
+    expected_match= 0
+    total_match= 0
+
+    for paadam in extract_paadam( padyam= padyam ):
+
+        lg= LaghuvuGuruvu( data= paadam ).generate()
+
+        paada_gana_kramam= tuple()
+        for g in lakshanam_config["gana_kramam"]:
+            paada_gana_kramam += ganamulu[g]
+
+        n_match= 0
+        for i in range(len(paada_gana_kramam)):
+            
+            if paada_gana_kramam[i]== lg[i][1]:
+                n_match+= 1
+            
+            else:
+                print(i, paada_gana_kramam[i], lg[i])
+
+        print(n_match)
+        expected_match+= len(paada_gana_kramam)
+        total_match+= n_match  
+      
+    return total_match, expected_match
