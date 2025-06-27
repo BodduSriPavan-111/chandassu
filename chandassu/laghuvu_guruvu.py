@@ -18,6 +18,8 @@ class LaghuvuGuruvu:
 
         for index in range( len(l) ):
 
+            l[index]= l[index].strip("ఁ")
+
             if l[index].isspace() or l[index] in list("""` ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ | ; : ' " , < > . / ?"""):
                 # text.append( l[index] )
                 pass
@@ -46,6 +48,7 @@ class LaghuvuGuruvu:
 
         l= self.split_by_letter()
 
+        print(l)
         marking= []
 
         for index in range( len(l) ):
