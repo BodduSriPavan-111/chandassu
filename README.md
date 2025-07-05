@@ -1,8 +1,14 @@
 ![plot](https://drive.google.com/uc?id=17dSonpOKADsOtm9WiJr2h6WTJSZ_ph9A)
 
 # chandassu
-Telugu Chandassu
+Open-source python library implementing Telugu Chandassu.
 
+# Features
+1. Text -> Aksharam
+2. Text -> Laghuvu Guruvu
+3. Laghuvu Guruvu -> Ganam
+4. Evaluate padya bhedam
+5. Auto padya bhedam detection
 #### Usage
 ```py
 from chandassu.check_lakshanam import n_paadam, n_aksharam, check_yati, check_prasa, check_vruttam_gana_kramam
