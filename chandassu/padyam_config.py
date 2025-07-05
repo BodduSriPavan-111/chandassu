@@ -5,7 +5,7 @@ class VupaJaathi:
     pass
 
 class Vruttamu:
-    vutpalamala= {
+    vutpalamaala= {
                     "n_paadalu": 4,
                     "n_aksharalu": 20,
                     "gana_kramam": ('భ', 'ర', 'న', 'భ', 'భ', 'ర', 'వ'),
@@ -13,7 +13,7 @@ class Vruttamu:
                     "prasa": True
                 }
 
-    champakamala= {
+    champakamaala= {
                     "n_paadalu": 4,
                     "n_aksharalu": 21,
                     "gana_kramam": ('న', 'జ', 'భ', 'జ', 'జ', 'జ', 'ర'),

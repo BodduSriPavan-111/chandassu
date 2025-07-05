@@ -25,8 +25,8 @@ def check_vruttam( padyam, type, weightage_factor= 1, verbose= True ):
     # paadam-aksharam
     pa_score= []
     for i in count_aksharam:
-        pa_score.append( i/ config["n_aksharalu"] )
-
+       pa_score.append( i/ config["n_aksharalu"] )
+       
     # 3. Match gana kramam in each paadam
     match_gana_kramam= check_vruttam_gana_kramam( 
                                                     padyam= padyam, 
