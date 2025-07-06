@@ -2,7 +2,6 @@
 Module: ganam.py
 Description: Contains configurations for each "Ganam"
 Author: Boddu Sri Pavan
-Date: 21-06-2025
 License: MIT
 """
 

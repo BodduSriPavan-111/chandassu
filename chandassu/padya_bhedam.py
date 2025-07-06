@@ -1,3 +1,10 @@
+"""
+Module: padya_bhedam.py
+Description: Contains functions to check type of Padyam.
+Author: Boddu Sri Pavan
+License: MIT
+"""
+
 from .check_lakshanam import *
 from .padyam_config import *
 

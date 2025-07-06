@@ -2,7 +2,6 @@
 Module: panimuttu.py
 Description: Contains utility functions for 'chandassu'
 Author: Boddu Sri Pavan
-Date: 22-06-2025
 License: MIT
 """
 

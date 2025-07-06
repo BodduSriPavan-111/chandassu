@@ -1,3 +1,10 @@
+"""
+Module: laghuvu_guruvu.py
+Description: Contains Telugu aksharam tokenizer, and Laghuvu-Guruvu generator functions.
+Author: Boddu Sri Pavan
+License: MIT
+"""
+
 import regex as re
 from .nidhi import lg_map, varnamala, gunintha_chihnam
 
@@ -5,10 +12,11 @@ class LaghuvuGuruvu:
 
     def __init__(self, data):
 
-        self.data= data
+        # Remove leading and trailing spaces
+        self.data= data.strip()
 
 
-    def split_by_letter( self ):
+    def aksharam_tokenize( self ):
 
         l= re.findall(r"\X", self.data)
 
@@ -51,7 +59,7 @@ class LaghuvuGuruvu:
 
     def generate( self ):
 
-        l= self.split_by_letter()
+        l= self.aksharam_tokenize()
 
         print(l)
         marking= []

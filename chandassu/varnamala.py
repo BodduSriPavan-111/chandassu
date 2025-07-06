@@ -1,4 +1,10 @@
-# Swathi Sree
+"""
+Module: laghuvu_guruvu.py
+Description: Contains basic utility functions.
+Author: Boddu Swathi Sree
+License: MIT
+"""
+
 from .nidhi import lg_map
 
 class Varnamala:

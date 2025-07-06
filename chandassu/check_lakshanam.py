@@ -2,7 +2,6 @@
 Module: lakshanam.py
 Description: Contains functions to check lakshanamulu (constraints/ features) of padyam
 Author: Boddu Sri Pavan
-Date: 22-06-2025
 License: MIT
 """
 

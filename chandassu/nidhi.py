@@ -1,8 +1,7 @@
 """
 Module: nidhi.py
-Description: Contains all constant values
-Author: Boddu Sri Pavan
-Date: 21-06-2025
+Description: Contains Telugu alphabets, and categories of alphabets
+Author: Boddu Swathi Sree
 License: MIT
 
 Resources:

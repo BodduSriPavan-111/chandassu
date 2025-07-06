@@ -1,3 +1,10 @@
+"""
+Module: padyam_config.py
+Description: Contains pre-defined configurations for Padyams.
+Author: Boddu Sri Pavan
+License: MIT
+"""
+
 class Jaathi:
     pass
 
