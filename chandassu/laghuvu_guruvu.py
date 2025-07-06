@@ -16,7 +16,7 @@ class LaghuvuGuruvu:
         text= []
         temp= ""
 
-        for index in range( len(l) ):
+        for index in range(len(l) ):
 
             l[index]= l[index].strip("ఁ")
 
@@ -27,6 +27,14 @@ class LaghuvuGuruvu:
             elif l[index].endswith('్') and temp == "" and index< len(l)-1 and not l[index+1].isspace():
                 temp+= l[index]
 
+            # For Samlistaaksharams with no.of letters>2
+            elif l[index].endswith('్') and temp != "" and not l[index+1].isspace():
+                temp+= l[index]
+
+            # For pollu hallu (at the end or at the end of the line)
+            elif l[index].endswith('్') and (index+1 == len(l) or l[index+1].isspace() ):
+                text[-1]+= l[index]
+
             elif (not l[index].endswith('్')) and temp != "":
                 text.append( temp+l[index] )
                 temp= ""
@@ -34,9 +42,6 @@ class LaghuvuGuruvu:
             elif (not l[index].endswith('్')) and temp == "":
                 text.append( l[index] )
                 temp= ""
-            
-            elif l[index].endswith('్') and (index+1 == len(l) or l[index+1].isspace() ):
-                text[-1]+= l[index]
 
             else:
                 print("Unknown Case (for future purpose) !\n We welcome your valuable contributions to 'chandassu' !")
