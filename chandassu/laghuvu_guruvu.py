@@ -16,7 +16,7 @@ class LaghuvuGuruvu:
         self.data= data.strip()
 
 
-    def aksharam_tokenize( self ):
+    def tokenize( self ):
 
         l= re.findall(r"\X", self.data)
 
@@ -28,7 +28,7 @@ class LaghuvuGuruvu:
 
             l[index]= l[index].strip("ఁ")
 
-            if l[index].isspace() or l[index] in list("""` ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ | ; : ' " , < > . / ?"""):
+            if l[index].isspace() or l[index].isnumeric() or l[index].upper() in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or l[index] in list("""` ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ | ; : ' " “ ” ‘ ’ , < > . / ? ఽ ।"""):
                 # text.append( l[index] )
                 pass
 
@@ -59,9 +59,9 @@ class LaghuvuGuruvu:
 
     def generate( self ):
 
-        l= self.aksharam_tokenize()
+        l= self.tokenize()
 
-        print(l)
+        # print(l)
         marking= []
 
         for index in range( len(l) ):

@@ -10,7 +10,9 @@ from .nidhi import achhulu, yati
 from .panimuttu import *
 from .ganam import ganamulu
 
-def n_paadam( padyam, verbose= True ):
+import math
+
+def n_paadam( data, aksharam_per_paadam, verbose= True ):
     """
     Count no.of paadams (lines) in given padyam.
     
@@ -24,36 +26,38 @@ def n_paadam( padyam, verbose= True ):
     n (int): Count of no.of paadams
     """
     
-    split_data= padyam.split("\n")
-    n= len(split_data)
+    length= len(LaghuvuGuruvu( data= data ).tokenize())/ aksharam_per_paadam
+
+    if length-int(length) == 0:
+        n= length
+    
+    else:
+        n= math.floor( length )
 
     if verbose:
         print("No.of paadams (lines) found: ", n)
-        print("Paadams (lines)\n---------------\n", split_data)
         
     return n
 
-def n_aksharam( padyam, verbose= True ):
+def n_aksharam( data, verbose= True ):
 
     # Implements same functionality
     # n_letters= []
     # for i in p.split("\n"):
     #     lg= LaghuvuGuruvu( data= i.strip() )
-    #     n_letters.append( len(lg.split_by_letter()) )
+    #     n_letters.append( len(lg.tokenize()) )
     # return n_letters
 
-    n= [ len(LaghuvuGuruvu(data= i.strip()).split_by_letter()) for i in padyam.split("\n")]
+    n= len(LaghuvuGuruvu( data= data ).tokenize())
 
     if verbose:
-        print("No.of aksharams (letters) in each paadam (line):")
-        for i in range(len(n)):
-            print("Paadam-",i, " :", n[i])
+        print("No.of aksharams (letters): ", n)
 
     return n
 
 def check_yati( paadam, yati_sthanam, verbose= True ):
 
-    letters= LaghuvuGuruvu( data= paadam ).split_by_letter()
+    letters= LaghuvuGuruvu( data= paadam ).tokenize()
 
     if verbose:
         print( letters)
@@ -159,7 +163,7 @@ def check_prasa( padyam, index= 1, verbose= True ):
     frequency= {}
 
     for i in padya_paadaalu:
-        aksharam= remove_gunintha_chihnam( LaghuvuGuruvu( data= i ).split_by_letter()[index] )
+        aksharam= remove_gunintha_chihnam( LaghuvuGuruvu( data= i ).tokenize()[index] )
         frequency[aksharam]= frequency.get( aksharam , 0) + 1
 
     if verbose:
