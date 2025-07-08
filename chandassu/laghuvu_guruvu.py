@@ -6,14 +6,16 @@ License: MIT
 """
 
 import regex as re
-from .nidhi import lg_map, varnamala, gunintha_chihnam
+from collections import Counter
+
+from .nidhi import lg_map, varnamala, hallulu, gunintha_chihnam
 
 class LaghuvuGuruvu:
 
     def __init__(self, data):
 
         # Remove leading and trailing spaces
-        self.data= data.strip()
+        self.data= data.strip().replace('\u200c', "").replace('\u200d', "").replace("x", "") 
 
 
     def tokenize( self ):
@@ -68,7 +70,15 @@ class LaghuvuGuruvu:
 
             if index < len(l)-1 :
 
-                if ('ద' in l[index+1] and 'ర' in l[index+1]) or ('మ' in l[index+1] and 'ర' in l[index+1]):
+                d= Counter(l[index+1])
+                del d["ర"]
+                
+                temp_count= 0
+                for i in d:
+                    if i in hallulu:
+                        temp_count+= 1*d[i] # "పుత్త్రు"
+
+                if 'ర' in l[index+1] and ((temp_count==0) or (temp_count == 1  and (not l[index+1].startswith('ర')))):
                     marking.append( lg_map[l[index][-1]] )
 
                 else:
