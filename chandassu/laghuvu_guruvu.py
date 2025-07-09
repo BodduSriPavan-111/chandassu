@@ -70,7 +70,14 @@ class LaghuvuGuruvu:
 
             if index < len(l)-1 :
 
-                d= Counter(l[index+1])
+                x= re.findall(r"\X", l[index+1])
+
+                if x[-1].endswith('్'):
+                    x= "".join(x[:-1])
+                else:
+                    x= "".join(x)   # ["గ","ర్భం"]
+
+                d= Counter(x)
                 del d["ర"]
                 
                 temp_count= 0
@@ -80,6 +87,7 @@ class LaghuvuGuruvu:
 
                 if 'ర' in l[index+1] and ((temp_count==0) or (temp_count == 1  and (not l[index+1].startswith('ర')))):
                     marking.append( lg_map[l[index][-1]] )
+            
 
                 else:
                     count= 0
@@ -88,6 +96,9 @@ class LaghuvuGuruvu:
                             count+= 1
 
                     if count > 1 and not l[index+1].endswith('్'):
+                        marking.append( "U" )
+                    
+                    elif count > 1 and l[index+1].endswith('్') and re.findall( r"\X", l[index+1])[0].endswith('్'):
                         marking.append( "U" )
                     
                     elif count > 1 and l[index+1].endswith('్'):
@@ -101,6 +112,8 @@ class LaghuvuGuruvu:
 
             else:
                 print("Unknown Case (for future purpose) !\n We welcome your valuable contributions to 'chandassu' !")
+
+
         
         # Not dict because dict donot allow multiple keys with same name
         return list(zip(l, marking))
