@@ -65,6 +65,10 @@ class LaghuvuGuruvu:
 
         # print(l)
         marking= []
+        
+        # Edge: 
+        # l= ["గ","ర్భం"] #['చ', "ష్ణున్"] #['చ', 'క్రాన్'] #['వి', 'ష్ణున్']
+        # re.findall(r"\X","విర్"), re.findall(r"\X", "ప్చర్"), re.findall( r"\X", "ప్చార్")
 
         for index in range( len(l) ):
 
