@@ -20,7 +20,12 @@ class LaghuvuGuruvu:
 
     def tokenize( self ):
 
-        l= re.findall(r"\X", self.data)
+        temp_l= re.findall(r"\X", self.data)
+
+        l= []
+        for i in temp_l:
+            if (not i in list("""` ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ | ; : ' " “ ” ‘ ’ , < > . / ? ఽ ।""")) and  (not i.upper() in "ABCDEFGHIJKLMNOPQRSTUVWXYZ") and (not i.isnumeric() ):
+                l.append(i)
 
         index= 0
         text= []
@@ -30,13 +35,13 @@ class LaghuvuGuruvu:
 
             l[index]= l[index].strip("ఁ")
 
-            if l[index].isspace() or l[index].isnumeric() or l[index].upper() in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or l[index] in list("""` ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ | ; : ' " “ ” ‘ ’ , < > . / ? ఽ ।"""):
+            if l[index].isspace(): #or l[index].isnumeric() or l[index].upper() in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or l[index] in list("""` ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ | ; : ' " “ ” ‘ ’ , < > . / ? ఽ ।"""):
                 # text.append( l[index] )
                 pass
 
             elif l[index].endswith('్') and temp == "" and index< len(l)-1 and not l[index+1].isspace():
                 temp+= l[index]
-
+        
             # For Samlistaaksharams with no.of letters>2
             elif l[index].endswith('్') and temp != "" and not l[index+1].isspace():
                 temp+= l[index]

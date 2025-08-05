@@ -1,6 +1,6 @@
 """
 Module: panimuttu.py
-Description: Contains utility functions for 'chandassu'
+Description: Contains utility functions
 Author: Boddu Sri Pavan
 License: MIT
 """

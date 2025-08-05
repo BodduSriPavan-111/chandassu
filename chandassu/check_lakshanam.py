@@ -12,7 +12,7 @@ from .ganam import ganamulu
 
 import math
 
-def n_paadam( data, aksharam_per_paadam, verbose= True ):
+def n_paadam( data, aksharam_per_paadam, clip= False, verbose= True ):
     """
     Count no.of paadams (lines) in given padyam.
     
@@ -25,17 +25,15 @@ def n_paadam( data, aksharam_per_paadam, verbose= True ):
     ------
     n (int): Count of no.of paadams
     """
-    
-    length= len(LaghuvuGuruvu( data= data ).tokenize())/ aksharam_per_paadam
 
-    if length-int(length) == 0:
-        n= length
-    
-    else:
-        n= math.floor( length )
+    n= len(data)/ aksharam_per_paadam
 
+    if clip:
+        if n-int(n) != 0:
+            n= math.floor( n )
     if verbose:
         print("No.of paadams (lines) found: ", n)
+        print()
         
     return n
 
@@ -48,22 +46,21 @@ def n_aksharam( data, verbose= True ):
     #     n_letters.append( len(lg.tokenize()) )
     # return n_letters
 
-    n= len(LaghuvuGuruvu( data= data ).tokenize())
+    n= len(data)
 
     if verbose:
         print("No.of aksharams (letters): ", n)
+        print()
 
     return n
 
 def check_yati( paadam, yati_sthanam, verbose= True ):
 
-    letters= LaghuvuGuruvu( data= paadam ).tokenize()
-
     if verbose:
-        print( letters)
+        print( paadam )
 
-    first_letter= letters[0]
-    yati_sthanam_letter= letters[ yati_sthanam-1 ]
+    first_letter= paadam[0]
+    yati_sthanam_letter= paadam[ yati_sthanam-1 ]
 
     first_letter= first_letter.replace('ం', "")
     first_letter= first_letter.replace("ಂ", "")
@@ -99,7 +96,6 @@ def check_yati( paadam, yati_sthanam, verbose= True ):
         flag= False
 
         for i in list(set(extract_aksharam(first_letter))):
-            print(i)
             for j in yati:
 
                 if i in j:
@@ -115,8 +111,12 @@ def check_yati( paadam, yati_sthanam, verbose= True ):
                         print(f"Yati mismatch occurred between '{i}' in '{first_letter}' and '{yati_sthanam_letter}'")
 
         if chihna_yati and flag:
-            print( "Yati Matched !")
+            if verbose:
+                print( "Yati Matched !")
             return True
+
+        else:
+            return False
         
     else:
         if len(first_letter)==1 and first_letter not in achhulu:
@@ -156,57 +156,60 @@ def check_yati( paadam, yati_sthanam, verbose= True ):
 
         return to_return
 
-def check_prasa( padyam, index= 1, verbose= True ):
-
-    padya_paadaalu= padyam.split("\n")
+def check_prasa( padya_paadaalu, index= 2, verbose= True ):
 
     frequency= {}
 
     for i in padya_paadaalu:
-        aksharam= remove_gunintha_chihnam( LaghuvuGuruvu( data= i ).tokenize()[index] )
-        frequency[aksharam]= frequency.get( aksharam , 0) + 1
-
+        try:
+            aksharam= remove_gunintha_chihnam( i[index-1] )
+            frequency[aksharam]= frequency.get( aksharam , 0) + 1
+        except:
+            pass
     if verbose:
         print( "Frequency of second aksharam (letter): ", frequency )
         if len( frequency ) != 1:
-            print("Prasa Mismatch Occurred !")
+            print("Prasa Mismatch Occurred : ", frequency)
+            print()
         else:
             print("Prasa Matched Successfully !")
+            print()
     
     return frequency
     
-def check_vruttam_gana_kramam( padyam, lakshanam_config, verbose= True ):
+def check_vruttam_gana_kramam( paadam_data, lakshanam_config, verbose= True ):
     expected_match= 0
     total_match= 0
-
-    paadam_data= extract_paadam( padyam= padyam )
 
     for index in range(len(paadam_data)):
 
         if verbose:
             print(f"Paadam-{index+1}\n--------")
 
-        paadam= paadam_data[index]
-        lg= LaghuvuGuruvu( data= paadam ).generate()
+        lg= paadam_data[index]
 
         paada_gana_kramam= tuple()
         for g in lakshanam_config["gana_kramam"]:
             paada_gana_kramam += ganamulu[g]
 
-        n_match= 0
-        for i in range(len(paada_gana_kramam)):
-            
-            if paada_gana_kramam[i]== lg[i][1]:
-                n_match+= 1
-                continue
-            
-            if verbose:
-                print(f"Ganam mismatch occurred in at {i+1}th aksharam (letter); found {lg[i]}, expected {paada_gana_kramam[i]}")
+        try:
+            n_match= 0
+            for i in range(len(paada_gana_kramam)):
+                
+                if paada_gana_kramam[i]== lg[i][1]:
+                    n_match+= 1
+                    continue
+                
+                if verbose:
+                    print(f"Ganam mismatch occurred in at {i+1}th aksharam (letter); found {lg[i]}, expected {paada_gana_kramam[i]}")
+        except:
+            pass
 
         expected_match+= len(paada_gana_kramam)
         total_match+= n_match  
 
         if verbose:
             print(f"No.of matches in paadam-{index}: {n_match} (expected {lakshanam_config['n_aksharalu']})")
+            print()
       
     return total_match, expected_match

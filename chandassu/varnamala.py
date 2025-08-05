@@ -1,6 +1,6 @@
 """
 Module: laghuvu_guruvu.py
-Description: Contains basic utility functions.
+Description: Contains basic utility functions. (For future purpose)
 Author: Boddu Swathi Sree
 License: MIT
 """

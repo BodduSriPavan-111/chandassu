@@ -12,6 +12,7 @@ class VupaJaathi:
     pass
 
 class Vruttamu:
+    
     vutpalamaala= {
                     "n_paadalu": 4,
                     "n_aksharalu": 20,
@@ -28,7 +29,7 @@ class Vruttamu:
                     "prasa": True
                 }
 
-    sardulam= {
+    saardulamu= {
                     "n_paadalu": 4,
                     "n_aksharalu": 19,
                     "gana_kramam": ('మ', 'స', 'జ', 'స', 'త', 'త', 'గ'),
@@ -36,7 +37,7 @@ class Vruttamu:
                     "prasa": True
                 }
 
-    mattebham= {
+    mattebhamu= {
                     "n_paadalu": 4,
                     "n_aksharalu": 20,
                     "gana_kramam": ('స', 'భ', 'ర', 'న', 'మ', 'య', 'వ'),
@@ -44,10 +45,10 @@ class Vruttamu:
                     "prasa": True
                 }
 
-    mattakokila= {
-                    "n_paadalu": 4,
-                    "n_aksharalu": 18,
-                    "gana_kramam": ('ర', 'స', 'జ', 'జ', 'భ', 'ర'),
-                    "yati_sthanam": 11,
-                    "prasa": True
-                }
+    # mattakokila= {
+    #                 "n_paadalu": 4,
+    #                 "n_aksharalu": 18,
+    #                 "gana_kramam": ('ర', 'స', 'జ', 'జ', 'భ', 'ర'),
+    #                 "yati_sthanam": 11,
+    #                 "prasa": True
+    #             }
