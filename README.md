@@ -1,4 +1,4 @@
-![plot](https://drive.google.com/uc?id=17dSonpOKADsOtm9WiJr2h6WTJSZ_ph9A)
+![plot](https://drive.google.com/uc?id=1izDz9LpCTmCMPUwNM7WMy4hTDNXgzrHF)
 
 # chandassu
 Open-source python library implementing Telugu Chandassu.
