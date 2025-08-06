@@ -5,18 +5,27 @@ Author: Boddu Sri Pavan
 License: MIT
 """
 
+from .ganam import *
+
 class Jaathi:
     pass
 
 class VupaJaathi:
-    pass
+    
+    teytageethi= {
+                    "n_paadaalu": 4,
+                    "gana_kramam": ( surya_ganam, indra_ganam, indra_ganam, surya_ganam, surya_ganam ),
+                    "yati_sthanam": (4, 1),
+                    "n_aksharalu": -1,
+                    "prasa": False
+                 }
 
 class Vruttamu:
     
     vutpalamaala= {
                     "n_paadalu": 4,
                     "n_aksharalu": 20,
-                    "gana_kramam": ('భ', 'ర', 'న', 'భ', 'భ', 'ర', 'వ'),
+                    "gana_kramam": (bha_ganam, ra_ganam, na_ganam, bha_ganam, bha_ganam, ra_ganam, va_ganam),
                     "yati_sthanam": 10,
                     "prasa": True
                 }
@@ -24,7 +33,7 @@ class Vruttamu:
     champakamaala= {
                     "n_paadalu": 4,
                     "n_aksharalu": 21,
-                    "gana_kramam": ('న', 'జ', 'భ', 'జ', 'జ', 'జ', 'ర'),
+                    "gana_kramam": (na_ganam, ja_ganam, bha_ganam, ja_ganam, ja_ganam, ja_ganam, ra_ganam),
                     "yati_sthanam": 11,
                     "prasa": True
                 }
@@ -32,7 +41,7 @@ class Vruttamu:
     saardulamu= {
                     "n_paadalu": 4,
                     "n_aksharalu": 19,
-                    "gana_kramam": ('మ', 'స', 'జ', 'స', 'త', 'త', 'గ'),
+                    "gana_kramam": (ma_ganam, sa_ganam, ja_ganam, sa_ganam, ta_ganam, ta_ganam, ga_ganam),
                     "yati_sthanam": 13,
                     "prasa": True
                 }
@@ -40,7 +49,7 @@ class Vruttamu:
     mattebhamu= {
                     "n_paadalu": 4,
                     "n_aksharalu": 20,
-                    "gana_kramam": ('స', 'భ', 'ర', 'న', 'మ', 'య', 'వ'),
+                    "gana_kramam": (sa_ganam, bha_ganam, ra_ganam, na_ganam, ma_ganam, ya_ganam, va_ganam),
                     "yati_sthanam": 14,
                     "prasa": True
                 }

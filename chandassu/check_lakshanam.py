@@ -8,7 +8,7 @@ License: MIT
 from .laghuvu_guruvu import LaghuvuGuruvu
 from .nidhi import achhulu, yati
 from .panimuttu import *
-from .ganam import ganamulu
+from .ganam import *
 
 import math
 
@@ -177,39 +177,74 @@ def check_prasa( padya_paadaalu, index= 2, verbose= True ):
     
     return frequency
     
-def check_vruttam_gana_kramam( paadam_data, lakshanam_config, verbose= True ):
-    expected_match= 0
-    total_match= 0
+def check_vruttam_gana_kramam( lg_data, config, verbose= True ):
+    ganam_data= []
 
-    for index in range(len(paadam_data)):
+    gana_kramam_score= 0
 
-        if verbose:
-            print(f"Paadam-{index+1}\n--------")
+    end= 0
 
-        lg= paadam_data[index]
+    while end< len(lg_data):
 
-        paada_gana_kramam= tuple()
-        for g in lakshanam_config["gana_kramam"]:
-            paada_gana_kramam += ganamulu[g]
+        for j in range( len(config["gana_kramam"]) ):
 
-        try:
-            n_match= 0
-            for i in range(len(paada_gana_kramam)):
+            for i in config["gana_kramam"][j]:
+
+                # Take legth of corresponding ganam
+                ganam= tuple([k[1] for k in lg_data[end: end+len(ganamulu[i]) ]])
+
+                # print( lg_data[end: end+len(ganamulu[i])] )
+
+                try:
+                    if r_ganamulu[ ganam ] == i:
+                        
+                        ganam_data.append( [lg_data[end: end+len(ganamulu[i])], r_ganamulu[ganam]] )
+
+                        gana_kramam_score+= 1
+
+                        if verbose:
+                            print( [lg_data[end: end+len(ganamulu[i])], r_ganamulu[ganam]] )
+
+                        break
+                except KeyError:
+                    pass
+            
+            end+= len(ganamulu[i])
+
+    return ganam_data, gana_kramam_score
+
+    # expected_match= 0
+    # total_match= 0
+
+    # for index in range(len(paadam_data)):
+
+    #     if verbose:
+    #         print(f"Paadam-{index+1}\n--------")
+
+    #     lg= paadam_data[index]
+
+    #     paada_gana_kramam= tuple()
+    #     for g in lakshanam_config["gana_kramam"]:
+    #         paada_gana_kramam += ganamulu[g]
+
+    #     try:
+    #         n_match= 0
+    #         for i in range(len(paada_gana_kramam)):
                 
-                if paada_gana_kramam[i]== lg[i][1]:
-                    n_match+= 1
-                    continue
+    #             if paada_gana_kramam[i]== lg[i][1]:
+    #                 n_match+= 1
+    #                 continue
                 
-                if verbose:
-                    print(f"Ganam mismatch occurred in at {i+1}th aksharam (letter); found {lg[i]}, expected {paada_gana_kramam[i]}")
-        except:
-            pass
+    #             if verbose:
+    #                 print(f"Ganam mismatch occurred in at {i+1}th aksharam (letter); found {lg[i]}, expected {paada_gana_kramam[i]}")
+    #     except:
+    #         pass
 
-        expected_match+= len(paada_gana_kramam)
-        total_match+= n_match  
+    #     expected_match+= len(paada_gana_kramam)
+    #     total_match+= n_match  
 
-        if verbose:
-            print(f"No.of matches in paadam-{index}: {n_match} (expected {lakshanam_config['n_aksharalu']})")
-            print()
+    #     if verbose:
+    #         print(f"No.of matches in paadam-{index}: {n_match} (expected {lakshanam_config['n_aksharalu']})")
+    #         print()
       
-    return total_match, expected_match
+    # return total_match, expected_match

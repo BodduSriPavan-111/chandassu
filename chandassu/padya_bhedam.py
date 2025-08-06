@@ -39,7 +39,8 @@ def check_vruttam( lg_data, type, weightage_factor= 1, verbose= True ):
 
 
         # 3. Match gana kramam in each paadam
-        match_gana_kramam= check_vruttam_gana_kramam( paadam_data= paadam_lg, lakshanam_config= config, verbose= verbose )
+        _, gana_kramam_score= check_vruttam_gana_kramam( lg_data, config, verbose= verbose )
+
         if verbose:
             print()
 
@@ -68,8 +69,8 @@ def check_vruttam( lg_data, type, weightage_factor= 1, verbose= True ):
 
         # 'weightage_factor' can be modified for more insights
         score["n_paadalu"]= weightage_factor*count_paadam/ config["n_paadalu"]
-        score["n_aksharalu"]= weightage_factor* count_aksharam/(config["n_paadalu"]*config["n_aksharalu"])
-        score["gana_kramam"]= weightage_factor*match_gana_kramam[0]/ match_gana_kramam[1]
+        score["n_aksharalu"]= weightage_factor* count_aksharam/ (config["n_paadalu"]*config["n_aksharalu"])
+        score["gana_kramam"]= weightage_factor* gana_kramam_score/ (config["n_paadalu"]*len(config["gana_kramam"]))
         score["yati_sthanam"]= weightage_factor*sum(match_yati)/ config["n_paadalu"]
         score["prasa"]= weightage_factor*max( match_prasa.values() )/ config["n_paadalu"]
 
