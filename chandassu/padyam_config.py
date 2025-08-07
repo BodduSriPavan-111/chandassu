@@ -13,11 +13,9 @@ class Jaathi:
 class VupaJaathi:
     
     teytageethi= {
-                    "n_paadaalu": 4,
+                    "n_paadalu": 4,
                     "gana_kramam": ( surya_ganam, indra_ganam, indra_ganam, surya_ganam, surya_ganam ),
                     "yati_sthanam": (4, 1),
-                    "n_aksharalu": -1,
-                    "prasa": False
                  }
 
 class Vruttamu:

@@ -54,13 +54,14 @@ def n_aksharam( data, verbose= True ):
 
     return n
 
-def check_yati( paadam, yati_sthanam, verbose= True ):
+def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthanam_letter= None, verbose= True ):
 
     if verbose:
         print( paadam )
 
-    first_letter= paadam[0]
-    yati_sthanam_letter= paadam[ yati_sthanam-1 ]
+    if first_letter == None and yati_sthanam_letter == None :
+        first_letter= paadam[0]
+        yati_sthanam_letter= paadam[ yati_sthanam-1 ]
 
     first_letter= first_letter.replace('ం', "")
     first_letter= first_letter.replace("ಂ", "")
