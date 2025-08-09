@@ -6,7 +6,7 @@ License: MIT
 """
 
 from .laghuvu_guruvu import LaghuvuGuruvu
-from .nidhi import achhulu, yati
+from .nidhi import achhulu, yati, hraswa_chihnam, deergha_chihnam
 from .panimuttu import *
 from .ganam import *
 
@@ -56,10 +56,10 @@ def n_aksharam( data, verbose= True ):
 
 def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthanam_letter= None, verbose= True ):
 
-    if verbose:
-        print( paadam )
-
     if first_letter == None and yati_sthanam_letter == None :
+        if verbose:
+            print( paadam )
+
         first_letter= paadam[0]
         yati_sthanam_letter= paadam[ yati_sthanam-1 ]
 
@@ -156,6 +156,125 @@ def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthan
             to_return= True
 
         return to_return
+
+def check_prasa_yati( padamwise_ganam_data, config, only_generic_yati= False, verbose= True):
+    
+    yati_match= []
+
+    for row in padamwise_ganam_data:
+        
+        if verbose:
+            print(row)
+
+        if (len(row[0][0]) > 1) and (len(row[ config["yati_sthanam"][0]-1 ][0]) > 1 ):
+
+            first_letter= [a[0] for a in row[0][0]]
+
+            # This extracts only one aksharam
+            yati_sthanam_letter= row[ config["yati_sthanam"][0]-1 ][0][ config["yati_sthanam"][1] ]
+            
+            generic_yati= check_yati( first_letter= first_letter[0], yati_sthanam_letter= yati_sthanam_letter[0], verbose= verbose )
+            
+            if only_generic_yati:
+
+                if verbose:
+                    print( "Generic Yati: ", generic_yati )
+                    print( first_letter, yati_sthanam_letter )
+
+                yati_match.append( generic_yati )
+
+                continue
+            
+            # This extracts two aksharas yati-sthanam letter and its succeeding
+            yati_sthanam_letter= [a[0] for a in row[ config["yati_sthanam"][0]-1 ][0]][:2]
+
+            prasa_yati_match= False
+
+            if generic_yati:
+                if verbose:
+                    print("Generic Yati Matched")
+                yati_match.append( True )
+
+            else:
+                
+                # Reference: https://te.wikipedia.org/wiki/%E0%B0%AA%E0%B1%8D%E0%B0%B0%E0%B0%BE%E0%B0%B8%E0%B0%AF%E0%B0%A4%E0%B0%BF
+
+                # Yati Sthanam: Hraswa-Deergham Check
+                hraswa_deergham_flag_1= " "
+
+                if first_letter[0][-1] in gunintha_chihnam:
+                    hraswa_deergham_flag_1= first_letter[0][-1]
+                else:
+                    hraswa_deergham_flag_1= " "
+
+                hraswa_deergham_flag_2= ""
+
+                if yati_sthanam_letter[0][-1] in gunintha_chihnam:
+                    hraswa_deergham_flag_2= yati_sthanam_letter[0][-1]
+                else:
+                    hraswa_deergham_flag_2= " "
+
+
+                # Prasa Sthanam: Prasa Check
+                l1= remove_gunintha_chihnam( first_letter[1] )
+                l2= remove_gunintha_chihnam( yati_sthanam_letter[1] )
+                
+                # Yati Sthanam
+                if ( hraswa_deergham_flag_1 in hraswa_chihnam and hraswa_deergham_flag_2 in hraswa_chihnam ):
+                    
+                    if verbose:
+                        print("Both Yati Sthanam aksharam: Hraswa")
+
+                    # Prasa Sthanam
+                    if  l1 == l2 :
+                        prasa_yati_match= True
+                        if verbose:
+                            print("Both Yati Sthanam chihnam matched")
+                    else:
+                        if verbose:
+                            print("Second Letter Mismatched: ", l1, "===", l2)
+
+                elif ( hraswa_deergham_flag_1 in deergha_chihnam and hraswa_deergham_flag_2 in deergha_chihnam ):
+                    
+                    if verbose:
+                        print("Both Yati Sthanam aksharam: Deergham ")
+
+                    if l1 == l2:
+                        prasa_yati_match= True
+                        if verbose:
+                            print("Both Yati Sthanam chihnam matched")
+                    else:
+                        if verbose:
+                            print("Second Letter Mismatched: ", l1, "===", l2)
+
+                else:
+                    if verbose:
+                        print("First Akshara Chihnam in Prasa Yati Mis-matched")
+                        print("First Akshara Chihnam: ", hraswa_deergham_flag_1)
+                        print("Prasa Yathi Akshara Chihnam: ", hraswa_deergham_flag_2)
+
+                if prasa_yati_match:
+                    yati_match.append( True )
+                    
+                    if verbose:
+                        print("Prasa Yati Matched")
+
+                else:
+
+                    if verbose:
+                        print("Prasa Yati Mis-matched")
+
+            if generic_yati == False and prasa_yati_match == False:
+                yati_match.append( False )
+                if verbose:
+                    print("Both Yati and PrasaYati mis-matched")
+        else:
+            yati_match.append( False )
+            
+            if verbose:
+                print("No paadam found")
+
+    return yati_match
 
 def check_prasa( padya_paadaalu, index= 2, verbose= True ):
 

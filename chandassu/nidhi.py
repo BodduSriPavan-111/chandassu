@@ -111,6 +111,12 @@ sakatarephamu= ['ఱ']
 # Symbols representing vowel diacritics
 gunintha_chihnam= ["ా","ి","ీ","ు","ూ","ృ","ౄ","ె","ే","ై","ొ","ో","ౌ", 'ం', "ಂ","ಃ"]
 
+
+
+# Hraswa-Deergha Chihna Yati 
+hraswa_chihnam= [" ","ి","ు","ృ","ె","ొ"]
+deergha_chihnam= ["ా","ీ","ూ","ౄ","ే","ై","ో","ౌ", 'ం', "ಂ","ಃ"]
+
 # Yati grid
 yati= [
         ['అ', 'ఆ', 'ఐ', 'ఔ', "ా", "ై", "ౌ", ' ', "య", "హ"],
