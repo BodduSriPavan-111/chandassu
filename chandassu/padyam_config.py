@@ -8,7 +8,23 @@ License: MIT
 from .ganam import *
 
 class Jaathi:
-    pass
+    
+    kandamu= {
+                "n_paadalu": 4,
+                "gana_kramam": ( ( kandam_odd, kandam_all, kandam_odd ),
+                                 ( kandam_all, kandam_odd, kandam_6, kandam_odd, kandam_2_4_last ),
+                                 ( kandam_odd, kandam_all, kandam_odd ),
+                                 ( kandam_all, kandam_odd, kandam_6, kandam_odd, kandam_2_4_last )
+                                ),
+                # Here (x,y)= x is the ganam number in human notation, and y is the computer index (can be '0' zero)
+                "yati_sthanam": (4, 0),   ### Logic update for configuration
+                
+                # Here, paadam numbers are in human notation 
+                # Therefore in the Yati calculation, to get computer index, '1' will be subtracted
+                "yati_paadalu": (2,4),
+                "prasa": True,
+                "only_generic_yati": True
+            }
 
 class VupaJaathi:
     
@@ -19,7 +35,9 @@ class VupaJaathi:
                                      ( surya_ganam, surya_ganam, surya_ganam, indra_ganam, indra_ganam ),
                                      ( surya_ganam, surya_ganam, surya_ganam, surya_ganam, surya_ganam )
                                     ),
-                    "yati_sthanam": (4,1),
+
+                    "yati_sthanam": (4,0), # 1
+                    "yati_paadalu": (1,2,3,4),
                     "only_generic_yati": False
                 }
 
@@ -30,9 +48,34 @@ class VupaJaathi:
                                      ( surya_ganam, indra_ganam, indra_ganam, surya_ganam, surya_ganam ),
                                      ( surya_ganam, indra_ganam, indra_ganam, surya_ganam, surya_ganam )
                                     ),
-                    "yati_sthanam": (4, 1),
+                    "yati_sthanam": (4, 0), # 1
+                    "yati_paadalu": (1,2,3,4),
                     "only_generic_yati": False
                  }
+    
+    seesamu= {
+                "true_n_paadalu": 4,
+                "n_paadalu": 8,
+                "gana_kramam": (
+                                    ( indra_ganam, indra_ganam, indra_ganam, indra_ganam ),
+                                    ( indra_ganam, indra_ganam, surya_ganam, surya_ganam ),
+
+                                    ( indra_ganam, indra_ganam, indra_ganam, indra_ganam ),
+                                    ( indra_ganam, indra_ganam, surya_ganam, surya_ganam ),
+
+                                    ( indra_ganam, indra_ganam, indra_ganam, indra_ganam ),
+                                    ( indra_ganam, indra_ganam, surya_ganam, surya_ganam ),
+
+                                    ( indra_ganam, indra_ganam, indra_ganam, indra_ganam ),
+                                    ( indra_ganam, indra_ganam, surya_ganam, surya_ganam ),
+                                ),
+
+                "yati_sthanam": (3, 0), # 1
+                "yati_paadalu": (1,2,3,4,5,6,7,8),
+                "only_generic_yati": False
+                # PRasa is optional
+                # Therefore ignored here (for score calculation)
+            }
 
 class Vruttamu:
     
@@ -47,6 +90,7 @@ class Vruttamu:
 
                     # Here (x,y)= x is the ganam number in human notation, and y is the computer index (can be '0' zero)
                     "yati_sthanam": (4,0), # Each ganam contains 3 aksharaas. 3X3 + 1= 10 
+                    "yati_paadalu": (1,2,3,4),
                     "prasa": True,
                     "only_generic_yati": True
                 }
@@ -62,6 +106,7 @@ class Vruttamu:
                     
                     # Here (x,y)= x is the ganam number in human notation, and y is the computer index (can be '0' zero)
                     "yati_sthanam": (4, 1), # 11 = 3X3 + 2+1
+                    "yati_paadalu": (1,2,3,4),
                     "prasa": True,
                     "only_generic_yati": True
                 }
@@ -78,6 +123,7 @@ class Vruttamu:
 
                     # Here (x,y)= x is the ganam number in human notation, and y is the computer index (can be '0' zero)
                     "yati_sthanam": (5, 0), #13,
+                    "yati_paadalu": (1,2,3,4),
                     "prasa": True,
                     "only_generic_yati": True
                 }
@@ -93,6 +139,7 @@ class Vruttamu:
                     
                     # Here (x,y)= x is the ganam number in human notation, and y is the computer index (can be '0' zero)
                     "yati_sthanam": (5, 1), #14,
+                    "yati_paadalu": (1,2,3,4),
                     "prasa": True,
                     "only_generic_yati": True
                 }

@@ -63,10 +63,11 @@ def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthan
         first_letter= paadam[0]
         yati_sthanam_letter= paadam[ yati_sthanam-1 ]
 
-    first_letter= first_letter.replace('ం', "")
-    first_letter= first_letter.replace("ಂ", "")
-    yati_sthanam_letter= yati_sthanam_letter.replace('ం', "")
-    yati_sthanam_letter= yati_sthanam_letter.replace("ಂ", "")
+    # Ignoring Visarga and PurnaBindu (As not mentioned in the reference book)
+    first_letter= first_letter.replace('ం', "").replace('ః', "")
+    first_letter= first_letter.replace("ಂ", "").replace( 'ః', "")
+    yati_sthanam_letter= yati_sthanam_letter.replace('ం', "").replace('ః', "")
+    yati_sthanam_letter= yati_sthanam_letter.replace("ಂ", "").replace('ః', "")
 
     if verbose:
         print("First aksharam (letter): ", first_letter)
@@ -76,7 +77,7 @@ def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthan
     if len(extract_aksharam(first_letter))> 1:
         samdit= True
 
-    if samdit:
+    if samdit or (not samdit):
         
         chihnam_a= extract_gunintha_chihnam( first_letter )
         chihnam_b= extract_gunintha_chihnam( yati_sthanam_letter )
@@ -94,71 +95,104 @@ def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthan
                         print(f"Chihna yati mismatch occurred between '{chihnam_a}' in '{first_letter}'  and '{chihnam_b}' in '{yati_sthanam_letter}'")
                     return False
 
-        flag= False
 
+        # సంయుక్తాక్షరాలు వచ్చిన చోట, యతి కోసం ఏ అక్షరాన్నైనా గణించవచ్చు. ఉదా: "క్రొ" మొదటి అక్షరం అనుకోండి. యతి మైత్రి కోసం దీన్ని "కొ"గా గానీ "రొ"గా గానీ భావించ వచ్చు. 
+        akshara_yati= False
         for i in list(set(extract_aksharam(first_letter))):
+
             for j in yati:
-
+                
                 if i in j:
-
-                    flag= False
+                    
                     for k in list(set(extract_aksharam(yati_sthanam_letter))):
                         
                         if k in j:
-                            flag= True
+
+                            akshara_yati= True
+
+                            if verbose:
+                                print(i, j, k)
+
+                            # Atleast one of samyukta dwitwa aksharam is enough for yati
                             break
                     
-                    if not flag and verbose:
-                        print(f"Yati mismatch occurred between '{i}' in '{first_letter}' and '{yati_sthanam_letter}'")
+                    if akshara_yati == True:
+                        break
+        
+        if not akshara_yati:
 
-        if chihna_yati and flag:
+            if verbose:
+                print(f"Yati mismatch occurred between '{i}' in '{first_letter}' and '{yati_sthanam_letter}'")
+
+            return False
+
+
+        if chihna_yati and akshara_yati:
             if verbose:
                 print( "Yati Matched !")
+
             return True
 
         else:
+
+            print("Chihna Yati: ", chihna_yati)
+            print("Akshara Yati: ", akshara_yati)
+
             return False
         
-    else:
-        if len(first_letter)==1 and first_letter not in achhulu:
-            first_letter= [first_letter]+[' ']
+    # else:
 
-        if len(yati_sthanam_letter)==1 and first_letter not in achhulu:
-            yati_sthanam_letter= [yati_sthanam_letter]+[" "]
+    #     if len(first_letter)==1 and first_letter not in achhulu:
+    #         first_letter= [first_letter]+[' ']
 
-        to_return= False
-        temp= []
-        for i in first_letter:
+    #     if len(yati_sthanam_letter)==1 and first_letter not in achhulu:
+    #         yati_sthanam_letter= [yati_sthanam_letter]+[" "]
 
-            for j in yati:
+    #     to_return= False
+    #     temp= []
+    #     for i in first_letter:
 
-                if i in j:
+    #         for j in yati:
+
+    #             if i in j:
                     
-                    flag= False
-                    for k in yati_sthanam_letter:
-                        if k in j:
-                            flag= True
-                            break
+    #                 flag= False
+    #                 for k in yati_sthanam_letter:
+    #                     if k in j:
+    #                         flag= True
+    #                         break
 
-                    if flag== True:
-                        temp.append( True )
-                    else:
-                        temp.append( False )
-                        # No break statement should be used here
-                        # Because same aksharam could be present in multiple associations
+    #                 if flag== True:
+    #                     temp.append( True )
+    #                 else:
+    #                     temp.append( False )
+    #                     # No break statement should be used here
+    #                     # Because same aksharam could be present in multiple associations
 
-                        if verbose:
-                            print(f"Yati mismatch occurred between: '{i}' in '{first_letter}' and '{yati_sthanam_letter}'")
+    #                     if verbose:
+    #                         print(f"Yati mismatch occurred between: '{i}' in '{first_letter}' and '{yati_sthanam_letter}'")
         
-        if all( temp ):
-            if verbose:
-                print( "Yati Matched Successfully!" )
-            to_return= True
+    #     if all( temp ):
+    #         if verbose:
+    #             print( "Yati Matched Successfully!" )
+    #         to_return= True
 
-        return to_return
+        # return to_return
 
 def check_prasa_yati( padamwise_ganam_data, config, only_generic_yati= False, verbose= True):
     
+    # Kanda Padyam Yati: 2,4 Paadalu only
+    # Remaining Padyams all paadams are having Yati
+    if verbose:
+        print( "Paadalu to follow Yati: ", config["yati_paadalu"] )
+        print( "No.of paadalu to follow Yati: ", len(config["yati_paadalu"]))
+
+    padamwise_ganam_data= [ padamwise_ganam_data[i-1] for i in config["yati_paadalu"] ] 
+    
+    if verbose:
+        print("Updated paadamwise_ganam_data: ")
+        print( padamwise_ganam_data )
+        
     yati_match= []
 
     for row in padamwise_ganam_data:

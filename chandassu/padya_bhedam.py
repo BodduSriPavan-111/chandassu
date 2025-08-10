@@ -9,13 +9,16 @@ from .check_lakshanam import *
 from .padyam_config import *
 
 TYPE_TO_BHEDAM_MAP= {
+                        'kandamu': Jaathi,
 
                         'aataveladi': VupaJaathi, 
                         'teytageethi': VupaJaathi, 
+                        'seesamu': VupaJaathi,
 
                         'vutpalamaala': Vruttamu, 
                         'champakamaala': Vruttamu,
-                        'mattebhamu': Vruttamu
+                        'mattebhamu': Vruttamu,
+                        'saardulamu': Vruttamu
                     }
 
 VRUTTAMU= ["vutpalamaala", "champakamaala", "mattebhamu", "saardulamu"]
@@ -107,13 +110,30 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
         print("Ganam Kramam Score: ", gana_kramam_score)
         print("Paadam-wise Yati: ", prasa_yati_match)
 
+    N_PAADALU= config.get("true_n_paadalu", -1)
+    if N_PAADALU == -1: # Not Present
+        N_PAADALU= config["n_paadalu"]
+
+        if verbose:
+            print("true_n_paadalu parameter found in config", N_PAADALU)
+
+    total_yati_paadalu= len(config["yati_paadalu"])
+
+    # Seesamu padyam, for convineience considered pseudo paadam count as 8
+    # Therefore, halving it
+    if type== "seesamu":
+        paadam_count= paadam_count/2
+        total_yati_paadalu= config["true_n_paadalu"]
+        
     score= {
-                'n_paadalu':  paadam_count/ config["n_paadalu"],
+                'n_paadalu':  paadam_count/ N_PAADALU,
                 'gana_kramam': gana_kramam_score/ sum([len(i) for i in config["gana_kramam"]]),
-                'yati_sthanam': sum(prasa_yati_match)/ config["n_paadalu"],
+                'yati_sthanam': sum(prasa_yati_match)/ total_yati_paadalu
             }
     
-    if type in VRUTTAMU:
+
+    # This conditions becomes True only for Vruttamu
+    if config.get("n_aksharalu", False):
 
         # Aksharam Count Score
         aksharam_count= 0
@@ -130,7 +150,10 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
 
                 aksharam_count+= len(j[0])
 
-        score["n_aksharalu"]= aksharam_count/ (config["n_paadalu"]*config["n_aksharalu"])
+        score["n_aksharalu"]= aksharam_count/ (N_PAADALU*config["n_aksharalu"])
+
+    # This conditions becomes True only for Vruttamu and Jaathi
+    if config.get("prasa", False):
 
         # Prasa Score
         index= 2    # Second letter
@@ -149,12 +172,18 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
         if verbose:
             print( "Frequency of second aksharam (letter): ", frequency )
             if len( frequency ) != 1:
-                print("Prasa Mismatch Occurred : ", frequency)
+                print("Prasa Mismatch Occurred : ", frequency )
                 print()
-            else:
+
+            elif (len(frequency) == 1) and (max(frequency.values()) == config["n_paadalu"]): # As 'seesamu' has no necessary condition to check prasa, can be ignored
                 print("Prasa Matched Successfully !")
                 print()
-        score["prasa"]= max( frequency.values() )/ config["n_paadalu"]
+
+            else:
+                print("Prasa Mismatch Occurred : ", frequency )
+                print()
+
+        score["prasa"]= max( frequency.values() )/ N_PAADALU
 
     overall_score= sum(score.values()) / len(score)
 

@@ -131,7 +131,13 @@ yati= [
         ["న", "ణ", "జ్ఞ"],
         ["ల", "ళ", "డ"],
         ["ద", "డ"],
-        ["ర", "ఱ"]
+        ["ర", "ఱ"],
+        
+        # The following are not present in  the YAti
+        # Therefore considering as Idempotentent/ Identity
+        ['ఙ'],
+        ['ఞ'],
+        ['వ']
 ]
 
 # Mapping Telugu letter to Laghuvu(|)/ Guruvu(U)
