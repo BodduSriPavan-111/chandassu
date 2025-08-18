@@ -179,7 +179,7 @@ def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthan
 
         # return to_return
 
-def check_prasa_yati( padamwise_ganam_data, config, only_generic_yati= False, verbose= True):
+def check_prasa_yati( padamwise_ganam_data, type, config, only_generic_yati= False, verbose= True):
     
     # Kanda Padyam Yati: 2,4 Paadalu only
     # Remaining Padyams all paadams are having Yati
@@ -187,7 +187,8 @@ def check_prasa_yati( padamwise_ganam_data, config, only_generic_yati= False, ve
         print( "Paadalu to follow Yati: ", config["yati_paadalu"] )
         print( "No.of paadalu to follow Yati: ", len(config["yati_paadalu"]))
 
-    padamwise_ganam_data= [ padamwise_ganam_data[i-1] for i in config["yati_paadalu"] ] 
+    if type == "kandamu":
+        padamwise_ganam_data= [ padamwise_ganam_data[i-1] for i in config["yati_paadalu"] ] 
     
     if verbose:
         print("Updated paadamwise_ganam_data: ")

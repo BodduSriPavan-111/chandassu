@@ -103,7 +103,7 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
                 print("Paadam wise split completed")
             break
     
-    prasa_yati_match= check_prasa_yati( padamwise_ganam_data= padamwise_ganam_data, config= config, verbose= verbose, only_generic_yati= config["only_generic_yati"])
+    prasa_yati_match= check_prasa_yati( padamwise_ganam_data= padamwise_ganam_data, type= type, config= config, verbose= verbose, only_generic_yati= config["only_generic_yati"])
 
     if verbose:
         print("Paadam Count: ", paadam_count)
@@ -123,7 +123,6 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
     # Therefore, halving it
     if type== "seesamu":
         paadam_count= paadam_count/2
-        total_yati_paadalu= config["true_n_paadalu"]
         
     score= {
                 'n_paadalu':  paadam_count/ N_PAADALU,
@@ -150,7 +149,12 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
 
                 aksharam_count+= len(j[0])
 
-        score["n_aksharalu"]= aksharam_count/ (N_PAADALU*config["n_aksharalu"])
+        # This is to quantify the overflow as unexpected
+        # This will activate only when No.of aksharams in given > No.of aksharams in expected
+        # Else: 0
+        subtract_factor= len(lg_data) - aksharam_count
+
+        score["n_aksharalu"]= (aksharam_count-subtract_factor)/ (N_PAADALU*config["n_aksharalu"])
 
     # This conditions becomes True only for Vruttamu and Jaathi
     if config.get("prasa", False):
@@ -165,7 +169,9 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
             try:
                 aksharam= remove_gunintha_chihnam(i[0][0][ index-1 ][0])
                 frequency[aksharam]= frequency.get( aksharam , 0) + 1
-                print(aksharam)
+                
+                if verbose:
+                    print(aksharam)
             except:
                 pass
 
