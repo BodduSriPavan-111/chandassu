@@ -1,6 +1,6 @@
 """
 Module: padyam_config.py
-Description: Contains pre-defined configurations for Padyams.
+Description: Contains pre-defined configurations for each type of Padyam.
 Author: Boddu Sri Pavan
 License: MIT
 """
@@ -8,7 +8,13 @@ License: MIT
 from .ganam import *
 
 class Jaathi:
+    """Configurations for 'Jaathi' class of padyams
     
+    # Attributes (Type of Padyam)
+    -----------------------------
+    kandamu: కందము
+    """
+
     kandamu= {
                 "n_paadalu": 4,
                 "gana_kramam": ( ( kandam_odd, kandam_all, kandam_odd ),
@@ -27,6 +33,14 @@ class Jaathi:
             }
 
 class VupaJaathi:
+    """Configurations for 'VupaJaathi' class of padyams
+    
+    # Attributes (Type of Padyam)
+    -----------------------------
+    aataveladi: ఆటవెలది 
+    teytageethi: తేటగీతి 
+    seesamu: సీసము
+    """
     
     aataveladi= {
                     "n_paadalu": 4,
@@ -78,6 +92,15 @@ class VupaJaathi:
             }
 
 class Vruttamu:
+    """Configurations for 'Vruttamu' class of padyams
+    
+    # Attributes (Type of Padyam)
+    -----------------------------
+    vutpalamaala: ఉత్పలమాల 
+    champakamaala: చంపకమాల
+    saardulamu: శార్దూలము
+    mattebhamu: మత్తేభము
+    """
     
     vutpalamaala= {
                     "n_paadalu": 4,
@@ -144,6 +167,7 @@ class Vruttamu:
                     "only_generic_yati": True
                 }
 
+    # Future Implementation
     # mattakokila= {
     #                 "n_paadalu": 4,
     #                 "n_aksharalu": 18,
