@@ -5,9 +5,27 @@ Author: Boddu Swathi Sree
 License: MIT
 """
 
-from .nidhi import lg_map
-
 class Varnamala:
+    """Telugu Varnamala
+    
+    # Attributes
+    ------------
+    varnamala: list
+        - Telugu Varnamala
+    sankhya: list
+        - Telugu numericals
+    gunintha_chihnam: list
+        - Telugu symbols for Gunintham (Consonant+Vowel Combinations)
+    gunintham: dict
+        - key (str): Hallu (Consonant)
+        - value (list): Gunintha Aksharams
+
+    # Methods
+    ---------
+    varnamala_map: Telugu Varnamala - ASCII number map
+    combine_rv: Generate Gunintha Aksharam 
+    """
+    
 
     def __init__( self ):
 
@@ -20,12 +38,10 @@ class Varnamala:
                         'ప','ఫ','బ','భ', 'మ',
                         'య', 'ర', 'ల','వ','శ','ష','స','హ', 'ళ', 'ఱ'
                     ]
-        
-        self.special_characters= []
 
         self.sankhya= [ "౦", "౧", "౨", "౩", "౪", "౫", "౬", "౭", "౮", "౯"]
 
-        self.gunintha_chihnam= ["","ా","ి","ీ","ు","ూ","ృ","ౄ","ె","ే","ై","ొ","ో","ౌ","ಂ","ಃ"]
+        self.gunintha_chihnam= [" ","ా","ి","ీ","ు","ూ","ృ","ౄ","ె","ే","ై","ొ","ో","ౌ","ಂ","ಃ"]
 
         self.gunintham= {
                         'క': ['క','కా','కి','కీ','కు','కూ','కృ','కౄ','కె','కే','కై','కొ','కో','కౌ','కం','కః'],
@@ -64,17 +80,41 @@ class Varnamala:
 
 
     def varnamala_map( self, to_num= True ):
+        """Telugu Varnamala - ASCII number map
+        
+        # Parameters
+        ------------
+        to_num: bool
+            - If 'True' then returns Telugu character to ASCII number map
+            - Default is set to 'True'
 
+        # Returns
+        ---------
+        Dictionary of Telugu Varnamala - ASCII number
+        """
+        
         if to_num == False:
             return {ord(i): i for i in self.varnamala}
         
         return {i: ord(i) for i in self.varnamala}
     
-    # r: root
-    # v: vowel sound
-    # gunintha aksharam= root + vowel
-    def combine_rv( self, root, vowel_sound ):
 
+    def combine_rv( self, root, vowel_sound ):
+        """Combines root consonant with the gunintha chihnam to get corresponding Gunintha Aksharam
+        where Gunintha Aksharam= Consonant + Gunintha Chihnam of vowel sound
+
+        # Parameters
+        ------------
+        root: str
+            - Consonant (Hallu)
+        vowel_sound: str
+            - Gunintha chihnam of required vowel sound
+
+        # Returns
+        ---------
+        Returns string of Gunintha Aksharam
+        """
+        
         if len(root)>1:
             root= root[0]
 

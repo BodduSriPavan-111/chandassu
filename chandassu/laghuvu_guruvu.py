@@ -12,16 +12,16 @@ from .nidhi import lg_map, varnamala, hallulu
 
 class LaghuvuGuruvu:
     """Contains Aksharam Tokenizer, Laghuvu-Guruvu Generator.
-    
-    # Methods
-    ---------
-    - tokenize: Aksharam Tokenizer.
-    - generate: Laghuvu-Guruvu Generator.
 
     # Attributes
     ------------
     data: str
         - Input Telugu string to be processed.
+
+     # Methods
+    ----------
+    - tokenize: Aksharam Tokenizer.
+    - generate: Laghuvu-Guruvu Generator.
     """
     
     def __init__(self, data):
