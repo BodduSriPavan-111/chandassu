@@ -24,7 +24,25 @@ TYPE_TO_BHEDAM_MAP= {
 VRUTTAMU= ["vutpalamaala", "champakamaala", "mattebhamu", "saardulamu"]
 
 def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose= False):
-
+    """Evaluates given Laghuvu-Guruvu data with given padyam type with confidence scores 
+    
+    # Parameters
+    ------------
+    lg_data: list
+        - Laghuvu-Guruvu data generated using laghuvu_guruvu.LaghuvuGuruvu.generate()
+    type: str
+        - Type of padyam
+        - Supported types: 'kandamu', 'aataveladi', 'teytageethi', 'seesamu', 'vutpalamaala',
+                            'champakamaala', 'mattebhamu', 'saardulamu'
+    return_micro_score: bool
+        - Set to 'True' to returns lakshanamwise scores
+        - Default is set to 'True'
+    verbose: bool
+        - Prints the result of each step
+        - For traceability
+        - Default is set to 'False'
+    """
+    
     bhedam= TYPE_TO_BHEDAM_MAP[type]
 
     if verbose:
