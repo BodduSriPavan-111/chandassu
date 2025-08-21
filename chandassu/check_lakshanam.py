@@ -328,6 +328,15 @@ def check_prasa_yati( padamwise_ganam_data, type, config, only_generic_yati= Fal
 
 def n_aksharam( data, verbose= True ):
     """Counts no.of Aksharam Tokens from the given LaghuvuGuruvu data
+
+    # Parameters
+    ------------
+    data: list
+        - LaghuvuGuruvu data
+    verbose: bool
+        - Prints the result of each step
+        - For traceability
+        - Default is set to 'False'
     Note: For future purpose.
     """
     
@@ -364,6 +373,8 @@ def n_paadam( data, aksharam_per_paadam, clip= False, verbose= True ):
     Return
     ------
     Count (int) of no.of paadams
+
+    Note: For future purpose.
     """
 
     n= len(data)/ aksharam_per_paadam
@@ -376,96 +387,3 @@ def n_paadam( data, aksharam_per_paadam, clip= False, verbose= True ):
         print()
         
     return n
-
-def check_prasa( padya_paadaalu, index= 2, verbose= True ):
-
-    frequency= {}
-
-    for i in padya_paadaalu:
-        try:
-            aksharam= remove_gunintha_chihnam( i[index-1] )
-            frequency[aksharam]= frequency.get( aksharam , 0) + 1
-        except:
-            pass
-    if verbose:
-        print( "Frequency of second aksharam (letter): ", frequency )
-        if len( frequency ) != 1:
-            print("Prasa Mismatch Occurred : ", frequency)
-            print()
-        else:
-            print("Prasa Matched Successfully !")
-            print()
-    
-    return frequency
-    
-def check_vruttam_gana_kramam( lg_data, config, verbose= True ):
-    ganam_data= []
-
-    gana_kramam_score= 0
-
-    end= 0
-
-    while end< len(lg_data):
-
-        for j in range( len(config["gana_kramam"]) ):
-
-            for i in config["gana_kramam"][j]:
-
-                # Take legth of corresponding ganam
-                ganam= tuple([k[1] for k in lg_data[end: end+len(ganamulu[i]) ]])
-
-                # print( lg_data[end: end+len(ganamulu[i])] )
-
-                try:
-                    if r_ganamulu[ ganam ] == i:
-                        
-                        ganam_data.append( [lg_data[end: end+len(ganamulu[i])], r_ganamulu[ganam]] )
-
-                        gana_kramam_score+= 1
-
-                        if verbose:
-                            print( [lg_data[end: end+len(ganamulu[i])], r_ganamulu[ganam]] )
-
-                        break
-                except KeyError:
-                    pass
-            
-            end+= len(ganamulu[i])
-
-    return ganam_data, gana_kramam_score
-
-    # expected_match= 0
-    # total_match= 0
-
-    # for index in range(len(paadam_data)):
-
-    #     if verbose:
-    #         print(f"Paadam-{index+1}\n--------")
-
-    #     lg= paadam_data[index]
-
-    #     paada_gana_kramam= tuple()
-    #     for g in lakshanam_config["gana_kramam"]:
-    #         paada_gana_kramam += ganamulu[g]
-
-    #     try:
-    #         n_match= 0
-    #         for i in range(len(paada_gana_kramam)):
-                
-    #             if paada_gana_kramam[i]== lg[i][1]:
-    #                 n_match+= 1
-    #                 continue
-                
-    #             if verbose:
-    #                 print(f"Ganam mismatch occurred in at {i+1}th aksharam (letter); found {lg[i]}, expected {paada_gana_kramam[i]}")
-    #     except:
-    #         pass
-
-    #     expected_match+= len(paada_gana_kramam)
-    #     total_match+= n_match  
-
-    #     if verbose:
-    #         print(f"No.of matches in paadam-{index}: {n_match} (expected {lakshanam_config['n_aksharalu']})")
-    #         print()
-      
-    # return total_match, expected_match
