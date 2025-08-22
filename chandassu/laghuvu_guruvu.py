@@ -11,17 +11,20 @@ from collections import Counter
 from .nidhi import lg_map, varnamala, hallulu
 
 class LaghuvuGuruvu:
-    """Contains Aksharam Tokenizer, Laghuvu-Guruvu Generator.
+    """
+    ## Contains Aksharam Tokenizer, Laghuvu-Guruvu Generator.
 
-    # Attributes
-    ------------
-    data: str
+    ## Attributes
+    -------------
+    1. data: str
         - Input Telugu string to be processed.
 
-     # Methods
-    ----------
-    - tokenize: Aksharam Tokenizer.
-    - generate: Laghuvu-Guruvu Generator.
+    ## Methods
+    -----------
+    1. tokenize
+        - Aksharam Tokenizer.
+    2. generate
+        - Laghuvu-Guruvu Generator.
     """
     
     def __init__(self, data):
@@ -31,17 +34,18 @@ class LaghuvuGuruvu:
 
 
     def tokenize( self ):
-        """Aksharam Tokenizer
-        This function tokenizes the input Telugu string into 'Aksharam Tokens'.
+        """
+        ## Aksharam Tokenizer
+        ### This function tokenizes the input Telugu string into 'Aksharam Tokens'.
 
-        # Attributes
-        ------------
-        text: list
+        ## Attributes
+        -------------
+        1. text: list
             - Each element corresponds to one Akharam Token for generating Laghuvu-Guruvu.
 
-        # Returns
-        ---------
-        text: list
+        ## Returns
+        ----------
+        1. text: list
             - Each element corresponds to one Akharam Token for generating Laghuvu-Guruvu.
         """
         
@@ -102,17 +106,18 @@ class LaghuvuGuruvu:
         return self.text
 
     def generate( self ):
-        """Generates Laghuvu-Guruvu for the tokenized Telugu string
+        """
+        ## LaghuvuGuruvu Generator
+        ### Generates Laghuvu-Guruvu for the tokenized Telugu string.
 
-        # Returns
-        ---------
+        ## Returns
+        ----------
         Return a list of tuples
         where each tuple is in the format: (Aksharam Token, Laghuvu/ Guruvu)
         where 
         Aksharam Token: str
         Laghuvu/ Guruvu: str
         """
-        
 
         l= self.tokenize()
 

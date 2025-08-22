@@ -8,11 +8,12 @@ License: MIT
 from .ganam import *
 
 class Jaathi:
-    """Configurations for 'Jaathi' class of padyams
+    """
+    ## Configurations for 'Jaathi' class of padyams.
     
-    # Attributes (Type of Padyam)
-    -----------------------------
-    kandamu: కందము
+    ## Attributes (Type of Padyam)
+    ------------------------------
+    1. kandamu: కందము
     """
 
     kandamu= {
@@ -33,13 +34,14 @@ class Jaathi:
             }
 
 class VupaJaathi:
-    """Configurations for 'VupaJaathi' class of padyams
+    """
+    ## Configurations for 'VupaJaathi' class of padyams.
     
-    # Attributes (Type of Padyam)
-    -----------------------------
-    aataveladi: ఆటవెలది 
-    teytageethi: తేటగీతి 
-    seesamu: సీసము
+    ## Attributes (Type of Padyam)
+    ------------------------------
+    1. aataveladi: ఆటవెలది 
+    2. teytageethi: తేటగీతి 
+    3. seesamu: సీసము
     """
     
     aataveladi= {
@@ -92,14 +94,15 @@ class VupaJaathi:
             }
 
 class Vruttamu:
-    """Configurations for 'Vruttamu' class of padyams
+    """
+    ## Configurations for 'Vruttamu' class of padyams.
     
-    # Attributes (Type of Padyam)
-    -----------------------------
-    vutpalamaala: ఉత్పలమాల 
-    champakamaala: చంపకమాల
-    saardulamu: శార్దూలము
-    mattebhamu: మత్తేభము
+    ## Attributes (Type of Padyam)
+    ------------------------------
+    1. vutpalamaala: ఉత్పలమాల 
+    2. champakamaala: చంపకమాల
+    3. saardulamu: శార్దూలము
+    4. mattebhamu: మత్తేభము
     """
     
     vutpalamaala= {

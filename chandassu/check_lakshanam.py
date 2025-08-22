@@ -1,6 +1,6 @@
 """
 Module: lakshanam.py
-Description: Contains functions to check lakshanamulu (constraints/ features) of padyam
+Description: Contains functions to check lakshanamulu (constraints/ features) of padyam.
 Author: Boddu Sri Pavan
 License: MIT
 """
@@ -13,25 +13,26 @@ from .ganam import *
 import math
 
 def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthanam_letter= None, verbose= True ):
-    """Check whether Paadam (Padyam line) is satisfying Yati constraint
+    """
+    ## Check whether Paadam (Padyam line) is satisfying Yati constraint.
     
-    # Parameters
-    ------------
-    yati_sthanam: int
-        - Position of corresponding Yati (Natural Number as per Telugu literature)
-    paadam: list
-        - LaghuvuGuruvu data
-    first_letter: str
-        - Aksharam Token at Yati position (Generally the first Aksharam Token in Padyam)
-    yati_sthanam_letter: str
-        - Corresponding position to Yati position as per Padyam configuration
-    verbose: bool
-        - Prints the result of each step
-        - For traceability
-        - Default is set to 'False'
+    ## Parameters
+    -------------
+    1. yati_sthanam: int
+        - Position of corresponding Yati (Natural Number as per Telugu literature).
+    2. paadam: list
+        - LaghuvuGuruvu data.
+    3. first_letter: str
+        - Aksharam Token at Yati position (Generally the first Aksharam Token in Padyam).
+    4. yati_sthanam_letter: str
+        - Corresponding position to Yati position as per Padyam configuration.
+    5. verbose: bool
+        - Prints the result of each step.
+        - For traceability.
+        - Default is set to 'False'.
 
-    # Returns
-    ---------
+    ## Returns
+    ----------
     'True' is Yati constraint is satisfied else 'False'.
     """
     
@@ -165,27 +166,28 @@ def check_yati( yati_sthanam= None, paadam= None, first_letter= None, yati_sthan
         # return to_return
 
 def check_prasa_yati( padamwise_ganam_data, type, config, only_generic_yati= False, verbose= True):
-    """Check Prasa Yati for given Paadamwise Laghuvu-Guruvu data
+    """
+    ## Check Prasa Yati for given Paadamwise Laghuvu-Guruvu data.
     
-    # Parameters
-    ------------
-    padamwise_ganam_data: list
-        - List of Ganamwise LaghuvuGuruvu data with Matched/UnMatched flag
-    type: str
-        - Type of Padyam
-    config: dict
-        - Configuration of Padyam
-    only_generic_yati: bool
-        - Flag to apply Prasa Yati
-        - Default is set to 'False'
-    verbose: bool
-        - Prints the result of each step
-        - For traceability
-        - Default is set to 'False'
+    ## Parameters
+    -------------
+    1. padamwise_ganam_data: list
+        - List of Ganamwise LaghuvuGuruvu data with Matched/UnMatched flag.
+    2. type: str
+        - Type of Padyam.
+    3. config: dict
+        - Configuration of Padyam.
+    4. only_generic_yati: bool
+        - Flag to apply Prasa Yati.
+        - Default is set to 'False'.
+    5. verbose: bool
+        - Prints the result of each step.
+        - For traceability.
+        - Default is set to 'False'.
 
-    # Returns
-    ---------
-    List of boolean values where index(i) corresponds to (i+1)th Paadam (Padyam Line) Yati match value
+    ## Returns
+    ----------
+    List of boolean values where index(i) corresponds to (i+1)th Paadam (Padyam Line) Yati match value.
     """
     
     if verbose:
@@ -327,17 +329,21 @@ def check_prasa_yati( padamwise_ganam_data, type, config, only_generic_yati= Fal
 
 
 def n_aksharam( data, verbose= True ):
-    """Counts no.of Aksharam Tokens from the given LaghuvuGuruvu data
+    """
+    ## Counts no.of Aksharam Tokens from the given LaghuvuGuruvu data.
 
-    # Parameters
-    ------------
-    data: list
-        - LaghuvuGuruvu data
-    verbose: bool
-        - Prints the result of each step
-        - For traceability
-        - Default is set to 'False'
-    Note: For future purpose.
+    ## Parameters
+    -------------
+    1. data: list
+        - LaghuvuGuruvu data.
+    2. verbose: bool
+        - Prints the result of each step.
+        - For traceability.
+        - Default is set to 'False'.
+    
+    ## Note
+    -------
+    For future purpose.
     """
     
     # Implements same functionality
@@ -357,24 +363,26 @@ def n_aksharam( data, verbose= True ):
 
 def n_paadam( data, aksharam_per_paadam, clip= False, verbose= True ):
     """
-    Count no.of paadams (lines) in given padyam.
+    ## Count no.of paadams (lines) in given padyam.
     
-    Attributes
+    ## Parameters
+    -------------
+    1. data: list
+        - LaghuvuGuruvu data.
+    2. aksharam_per_paadam: int
+        - No.of Aksharam Tokens for Paadam (Padyam Line).
+    3. clip: bool
+        - To apply floor.
+    4. verbose: str
+        - Flag to print tracing steps.
+    
+    ## Returns
     ----------
-    data: list
-        - LaghuvuGuruvu data
-    aksharam_per_paadam: int
-        - No.of Aksharam Tokens for Paadam (Padyam Line)
-    clip: bool
-        - To apply floor
-    verbose: str
-        - Flag to print tracing steps
-    
-    Return
-    ------
-    Count (int) of no.of paadams
+    Count (int) of no.of paadams.
 
-    Note: For future purpose.
+    ## Note
+    -------
+    For future purpose.
     """
 
     n= len(data)/ aksharam_per_paadam
