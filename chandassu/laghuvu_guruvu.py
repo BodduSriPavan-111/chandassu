@@ -164,7 +164,7 @@ class LaghuvuGuruvu:
             
                 else:
 
-                    # Find count of characters in succeeding Aksharam Token
+                    # Find count of varnamala characters in succeeding Aksharam Token
                     count= 0
                     for j in list(l[index+1]):
                         if j in varnamala:
