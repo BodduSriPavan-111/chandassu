@@ -1,0 +1,497 @@
+___________________
+AKSHARAM TOKENIZER
+___________________
+
+temp_l= re.findall(r"\X", INPUT_TEXT)
+l= Remove special characters, alphabets, numbers from temp_l
+
+index= 0
+text= []
+temp= ""
+
+for index from 0 to len(l) do
+
+    l[index]= Remove Ara Sunna from l[index]
+
+    if l[index].isspace then
+        pass
+
+    else l[index].endswith(POLLU) and temp == "" and index<(len(l)-1) and not l[index+1].isspace:
+        temp+= l[index]   
+
+    elif l[index].endswith(POLLU) and temp != "" and not l[index+1].isspace:
+        temp+= l[index]
+
+    elif l[index].endswith(POLLU) and (index+1 == len(l) or l[index+1].isspace ):
+        text[-1]+= l[index] 
+
+    elif (not l[index].endswith(POLLU)) and temp != "":
+        text.append( temp+l[index] )
+        temp= ""
+
+    elif (not l[index].endswith(POLLU)) and temp == "":
+        text.append( l[index] )
+        temp= ""
+
+    end if
+
+end for
+
+
+
+
+
+_______________________
+LAGHUVUGURUVU GENERATOR
+_______________________
+
+
+l= aksharam_tokenizer(INPUT_TEXT)
+
+marking= []
+
+for index from 0 to len(l) do
+
+    if index < (len(l)-1) do
+
+        x= re.findall(r"\X", l[index+1])
+
+        if x[-1].endswith('POLLU') then
+            x= "".join(x[:-1]) 
+        
+        else
+            x= "".join(x)
+
+        end if
+
+        d= frequency_counter(x)
+
+        del d["Ra"]
+        
+        temp_count= 0
+        for i in d do
+            if i in HALLULU then
+
+                temp_count+= d[i]
+            end if
+        end for
+
+        
+        if 'Ra' in l[index+1] and ((temp_count==0) or (temp_count == 1  and (not l[index+1].startswith('Ra')))) then
+            marking.append( lg_map[l[index][-1]] )
+    
+        else
+
+            count= 0
+            for j in list(l[index+1]) do
+                if j in varnamala then
+                    count+= 1
+                end if
+            end for
+
+            if count > 1 and not l[index+1].endswith(POLLU) then
+                marking.append( "U" )
+            
+            elif count > 1 and l[index+1].endswith(POLLU) and re.findall( r"\X", l[index+1])[0].endswith(POLLU) then
+                marking.append( "U" )
+            
+            elif count > 1 and l[index+1].endswith(POLLU) then
+                marking.append( lg_map[l[index][-1]] )
+
+            else
+                marking.append( lg_map[l[index][-1]] )
+            
+            end if
+
+        end if
+    
+    elif l[index][-1] in lg_map then
+        marking.append( lg_map[l[index][-1]] )
+
+    end if
+
+end for
+return list(zip(l, marking))
+
+
+
+
+
+
+
+
+
+
+
+Chandassu represents the metrical structure underlying Telugu poetry, where padyams (poems) exhibit specific prosodic patterns that determine their classification. Despite the rich tradition of Telugu metrical poetry spanning centuries, computational analysis of chandassu remains largely unexplored due to the absence of standardized datasets, specialized tools, and evaluation methodologies. This work introduces the first comprehensive computational framework for analyzing Telugu metrical poetry, comprising four key contributions: (1) a curated dataset of 4,651 padyams with corresponding LaghuvuGuruvu (light-heavy syllabic) annotations, (2) AksharamTokenizer, a specialized character-level tokenizer designed for Telugu prosodic analysis, (3) a novel algorithmic approach for automated chandassu identification, and (4) Chandassu Score, a quantitative evaluation metric for assessing metrical correctness. Our algorithm achieves a Chandassu Score of 91.73%, establishing the first benchmark for computational analysis of Telugu metrical poetry. This work establishes foundational resources for Telugu computational prosody, providing essential infrastructure for advancing computational approaches to Telugu poetics. The contributions extend beyond Telugu-specific applications, offering insights into computational analysis of syllable-timed languages with complex prosodic systems. The framework facilitates future research in automated poetry generation, literary analysis, and preservation of classical poetic traditions, contributing significantly to the broader field of computational literary analysis and digital humanities.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+____________________________
+PADYA BHEDAM CHECKER
+____________________________
+
+lg\_data= LaghuvuGuruvu\_Generator(INPUT\_TEXT)
+
+config= CONFIGURATION\_OF\_PADYAM to evaluate
+ganamulu= GANAM\_TO\_SYMBOL\_MAP
+r\_ganamulu= SYMBOL\_TO\_GANAM\_MAP
+
+padamwise\_ganam\_data= []
+
+gana\_kramam\_score= 0
+end= 0
+paadam\_count= 0
+
+for line from 0 to len(config["gana\_kramam"]) do
+
+    ganam\_data= []
+
+    for j from 0 to len(config["gana\_kramam"][line]) do
+
+        ganam\_match\_flag= False
+
+        for i in config["gana\_kramam"][line][j] do
+
+            ganam= tuple([k[1] for k in lg\_data[end: end+len(ganamulu[i])]])
+
+            
+            if r\_ganamulu[ ganam ] equals to i then
+                
+                ganam\_data.append([lg\_data[end:end+len(ganamulu[i])],r\_ganamulu[ganam]])
+
+                gana\_kramam\_score+= 1
+
+                ganam\_match\_flag= True
+
+                break
+
+            else if Exception occurred then
+                pass
+
+            end if
+            
+        end for
+        
+        if ganam\_match\_flag == False then
+            ganam\_data.append([lg_data[end: end+len(ganamulu[i])],"UnMatched"])
+        end if
+
+        end+= len(ganamulu[i])
+
+    end for
+
+    if len(ganam\_data[0][0]) > 1 then
+        paadam\_count+= 1
+    end if
+
+    padamwise\_ganam\_data.append(ganam\_data)
+    
+    if end >= len(lg\_data):
+        break
+
+end for
+
+prasa\_yati\_match= check\_prasa\_yati(padamwise\_ganam\_data, type, config, verbose, only\_generic\_yati= config["only\_generic\_yati"])
+
+
+
+N\_PAADALU= config["n\_paadalu"]
+
+total\_yati\_paadalu= len(config["yati\_paadalu"])
+
+if type== "seesamu" then
+    paadam\_count= paadam\_count/2
+end if
+
+score= {
+            'n\_paadalu':  paadam\_count/ N\_PAADALU,
+            'gana\_kramam': gana\_kramam\_score/ sum([len(i) for i in config["gana\_kramam"]]),
+            'yati\_sthanam': sum(prasa\_yati\_match)/ total\_yati\_paadalu
+        }
+
+if config.get("n\_aksharalu") then
+
+    aksharam\_count= 0
+
+    for i in padamwise\_ganam\_data do
+
+        for j in i do
+
+            aksharam\_count+= len(j[0])
+
+        end for
+
+    end for
+    subtract\_factor= len(lg\_data) - aksharam\_count
+
+    score["n\_aksharalu"]= (aksharam\_count-subtract\_factor)/ (N\_PAADALU*config["n\_aksharalu"])
+end if
+
+
+if config.get("prasa") then
+
+    index= 2    # Second letter
+
+    frequency= {}
+
+    for i in padamwise\_ganam\_data do
+
+        if no Exception then
+            aksharam= remove\_gunintha\_chihnam(i[0][0][index-1][0])
+            frequency[aksharam]= frequency.get(aksharam,0)+ 1
+            
+        else
+            pass
+
+    end for
+    score["prasa"]= max(frequency.values())/ N\_PAADALU
+
+end if
+
+overall\_score= sum(score.values())/ len(score)
+
+return {"chandassu\_score": overall\_score, "micro\_score": score}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+________________________________
+CHECK YATI
+________________________________
+
+if first_letter == None and yati_sthanam_letter == None then
+    first_letter= paadam[0]
+    yati_sthanam_letter= paadam[ yati_sthanam-1 ]
+end if
+
+
+first_letter= first_letter.replace([PURNA_BINDU, VISARGA], "")
+yati_sthanam_letter= yati_sthanam_letter.replace([PURNA_BINDU, VISARGA], "")
+
+chihnam_a= extract_gunintha_chihnam( first_letter )
+chihnam_b= extract_gunintha_chihnam( yati_sthanam_letter )
+
+chihna_yati= False  # Chihna Yati: Yati checking for ACHHULU
+for i in yati do    
+
+    if chihnam_a in i then
+
+        if chihnam_b in i then
+            chihna_yati= True
+
+        else
+            return False
+
+        end if
+    end if
+end for
+
+akshara_yati= False # Akshara Yati: Yati check for NON-ACCHULU
+for i in list(set(extract_aksharam(first_letter))) do
+
+    for j in yati do
+        
+        if i in j then
+            
+            for k in list(set(extract_aksharam(yati_sthanam_letter))) do
+                
+                if k in j then
+
+                    akshara_yati= True
+                    break
+            end for
+            if akshara_yati == True then
+                break
+            end if
+        end if
+    end for
+end for
+
+if not akshara_yati then
+    return False
+end if
+
+if chihna_yati and akshara_yati then
+    return True
+
+else
+
+    return False
+end if
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_________________________________
+CHECK PRASA YATI
+_________________________________
+
+
+if type== "kandamu" then
+    padamwise\_ganam\_data= [padamwise\_ganam\_data[i-1] for i in config["yati\_paadalu"]] 
+end if
+    
+yati\_match= []
+
+for row in padamwise\_ganam\_data do
+
+    if (len(row[0][0])>1) and (len(row[config["yati\_sthanam"][0]-1][0])>1) then
+
+        first\_letter= [a[0] for a in row[0][0]]
+
+        yati\_sthanam\_letter= row[config["yati\_sthanam"][0]-1][0][config["yati\_sthanam"][1]]
+        
+        generic\_yati= check\_yati(first\_letter= first\_letter[0], yati\_sthanam\_letter= yati\_sthanam\_letter[0], verbose= verbose)
+        
+        if only\_generic\_yati== True then
+
+            yati\_match.append(generic\_yati)
+
+            continue
+        end if
+        
+        yati\_sthanam\_letter= [a[0] for a in row[config["yati\_sthanam"][0]-1][0]][:2]
+
+        prasa\_yati\_match= False
+
+        if generic\_yati== True then
+            
+            yati\_match.append( True )
+
+        else:
+
+            hraswa\_deergham\_flag\_1= " "
+
+            if first\_letter[0][-1] in gunintha\_chihnam then
+                hraswa\_deergham\_flag\_1= first\_letter[0][-1]
+            else
+                hraswa\_deergham\_flag\_1= " "
+            end if
+
+            hraswa\_deergham\_flag\_2= ""
+
+            if yati\_sthanam\_letter[0][-1] in gunintha\_chihnam then
+                hraswa\_deergham\_flag_2= yati\_sthanam\_letter[0][-1]
+            else
+                hraswa\_deergham\_flag\_2= " "
+            end if
+
+            l1= remove\_gunintha\_chihnam(first\_letter[1])
+            l2= remove\_gunintha\_chihnam(yati\_sthanam\_letter[1])
+            
+            if (hraswa\_deergham\_flag\_1 in hraswa\_chihnam and hraswa\_deergham\_flag\_2 in hraswa\_chihnam) then
+                
+                if  l1 == l2 then
+                    prasa\_yati\_match= True
+                else
+                    pass
+                end if
+
+            elif (hraswa\_deergham\_flag\_1 in deergha\_chihnam and hraswa\_deergham\_flag\_2 in deergha\_chihnam ) then
+
+                if l1 == l2 then
+                    prasa\_yati\_match= True
+                    
+                else
+                    pass
+                end if
+            else:
+                pass
+            
+            end if
+
+            if prasa\_yati\_match then
+                yati\_match.append( True )
+            else
+                pass
+            end if
+
+        end if
+        
+        if generic\_yati == False and prasa\_yati\_match == False then
+            yati\_match.append( False )
+        end if
+            
+    else
+        yati\_match.append( False )
+    end if  
+
+end for
+
+return yati\_match
+
+
+
+
+
+
+
+
+
+
+
+
+

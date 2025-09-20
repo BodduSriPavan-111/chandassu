@@ -181,7 +181,7 @@ class LaghuvuGuruvu:
                         marking.append( "U" )
                     
                     # If 'count' is greater than '1' and succeeding Aksharam Token ends with 'Pollu'
-                    # then mark current Aksharam Token as per the last character in current Aksharam Token
+                    # the,ṁn mark current Aksharam Token as per the last character in current Aksharam Token
                     elif count > 1 and l[index+1].endswith('్'):
                         marking.append( lg_map[l[index][-1]] )
 

@@ -1,0 +1,601 @@
+\documentclass[final]{clv2025}
+
+\jvol{vv}
+\jnum{nn}
+\jyear{2025}
+%There is no need for the authors to change the above.
+
+\dochead{Short Paper} 
+% Possible options: Long Paper, Short Paper, Survey, Survey Proposal, Position Paper, Last Words, Book Review, Dissertation Award, Lifetime Achievement Award, Squibs and Discussions, Featured Article
+
+\pageonefooter{Action editor: \{action editor name\}. Submission received: DD Month YYYY; revised version received: DD Month YYYY; accepted for publication: DD Month YYYY.}
+% To be filled when the paper is accepted. The editorial office will share the relevant information with the authors. Example: Action Editor: Wei Lu. Submission received: 10 February 2023; revised version received: 30 May 2023; accepted for publication: 15 June 2023.
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\runningtitle{Chandassu: Dataset, Tokenizer, Algorithm, and Evaluation Metrics for Metrical Poetry in Telugu Language}
+
+\runningauthor{Sri Pavan, Swathi Sree}
+
+\begin{document}
+
+\title{Chandassu: Dataset, Tokenizer, Algorithm, and Evaluation Metrics for Metrical Poetry in Telugu Language}
+
+\author{Boddu Sri Pavan$^{1}$, Boddu Swathi Sree$^{2}$}
+
+\affilblock{
+    \affil{Independent Researcher\\\quad \email{boddusripavan111@gmail.com}}
+    \affil{Department of Computer Science, Rajiv Gandhi University of Knowledge Technologies, Nuzvid\\\quad \email{n220962@rguktn.ac.in}}
+}
+
+\maketitle
+
+\begin{abstract}
+Chandassu represents the metrical structure underlying Telugu poetry, where padyams (poems) exhibit specific prosodic patterns that determine their classification. Despite the rich tradition of Telugu metrical poetry spanning centuries, computational analysis of chandassu remains largely unexplored due to the absence of standardized datasets, specialized tools, and evaluation methodologies. This work introduces the first comprehensive computational framework for analyzing Telugu metrical poetry, comprising four key contributions: (1) a curated dataset of 4,651 padyams with corresponding LaghuvuGuruvu (light-heavy syllabic) annotations, (2) AksharamTokenizer, a specialized character-level tokenizer designed for Telugu prosodic analysis, (3) a novel algorithmic approach for automated chandassu identification, and (4) Chandassu Score, a quantitative evaluation metric for assessing metrical correctness. Our algorithm achieves a Chandassu Score of 91.73\%, establishing the first benchmark for computational analysis of Telugu metrical poetry. This work establishes foundational resources for Telugu computational prosody, providing essential infrastructure for advancing computational approaches to Telugu poetics. The contributions extend beyond Telugu-specific applications, offering insights into computational analysis of syllable-timed languages with complex prosodic systems. The framework facilitates future research in automated poetry generation, literary analysis, and preservation of classical poetic traditions, contributing significantly to the broader field of computational literary analysis and digital humanities.
+\end{abstract}
+
+
+\section{Introduction}
+Telugu, a Indian language spoken by over 75 million speakers \cite{telugu_population}, possesses a rich tradition of metrical poetry known as chandassu. Unlike free verse, chandassu poetry adheres to strict prosodic patterns that govern syllabic weight, rhythm, and structural organization. The computational analysis of such metrical systems presents unique challenges due to the complex interplay between phonological properties, orthographic representation, and traditional prosodic rules.
+The fundamental units of Telugu prosody are laghuvu (light syllables) and guruvu (heavy syllables), traditionally represented by the symbols "|" and "U" respectively. Every aksharam (the minimal human perceivable unit in Telugu script) is classified as either laghuvu or guruvu based on its phonological duration and adherence to classical Telugu prosodic rules \cite{chando_vyakaranamu, pedda_bala_siksha}. These binary classifications form the foundation for higher-level metrical structures.
+
+Ganams represent sequential patterns of laghuvu-guruvu combinations that serve as the building blocks of metrical verses. Based on the number of aksharam tokens they contain, ganams are categorized into four groups, as shown in Table~\ref{tab:cat_ganam_at}. This taxonomy encompasses the complete spectrum from minimal single-aksharam ganams (LA: |, GA: U) to complex four-aksharam patterns (NALA: ||||, NAGA: |||U, SALA: ||U|).
+
+\begin{table}[b!]
+\caption{Ganam classification by aksharam token count and laghuvu-guruvu pattern}
+\label{tab:cat_ganam_at}
+\begin{tabular}{lll}
+\toprule
+Aksharam Token Count& Ganam Name& LaghuvuGuruvu Pattern\\
+\midrule
+1& LA& | \\
+1& GA& U \\
+2& LAA& || \\
+2& VA& |U \\
+2& HA& U| \\
+2& GAA& UU \\
+3& NA& ||| \\
+3& SA& ||U \\
+3& JA& |U| \\
+3& YA& |UU \\
+3& BHA& U|| \\
+3& RA& U|U \\
+3& THA& UU| \\
+3& MA& UUU \\
+4& NALA& |||| \\
+4& NAGA& |||U \\
+4& SALA& ||U| \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Telugu prosody further categorizes ganams into two functional classes: \textit{Indra Ganams} (BHA, RA, THA, NALA, NAGA, SALA) and \textit{Surya Ganams} (HA, NA). This classification reflects traditional pedagogical approaches and influences the permissible substitutions within metrical patterns.
+
+Telugu metrical poetry encompasses three primary structural classes, each containing multiple varieties (types) with distinct constraints, as described in Table~\ref{tab:chandassu_dataset}. These constraints govern various aspects including the number of paadams (lines), aksharam count per each paadam (number of aksharam tokens per each line), ganam sequences, yati (caesura), defined as the first aksharam token in each paadam, prasa (alliteration pattern), defined as the second aksharam token in each paadam, and prasa yati, a typical varient of yati. The interplay of these elements creates the complex metrical frameworks that define different poetic forms. Collections of such verses, particularly satakams (anthologies typically containing 100 or more padyams), represent significant literary achievements in Telugu tradition.
+
+\begin{table}[b!]
+\caption{Telugu prosodic classes and types in Chandassu dataset}
+\label{tab:chandassu_dataset}
+\begin{tabular}{ll}
+\toprule
+Prosodic Class& Padyam Types\\
+\midrule
+Vruttamu& Vutpalamaala, Champakamaala, Saardulamu, Mattebhamu\\
+Jaathi& Kandamu \\
+Vupajaathi& Teytageethi, Aataveladi, Seesamu\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Despite the cultural and linguistic importance of chandassu, the comprehensive computational analysis of Telugu metrical poetry remains largely unexplored. Traditional manual analysis is time-intensive and requires extensive expertise in classical prosody. The lack of computational tools has hindered both preservation efforts and systematic analysis of large poetry corpora. Furthermore, the absence of standardized datasets and evaluation metrics has prevented the development of automated systems for metrical analysis and generation.
+
+This work addresses these gaps by introducing the first comprehensive computational framework for Telugu chandassu analysis. Our contributions include: (1) a curated dataset of 4,651 padyams with LaghuvuGuruvu annotations, (2) AksharamTokenizer for prosodic analysis, (3) an algorithmic approach for automated chandassu identification, and (4) Chandassu Score as a quantitative evaluation metric. By providing these resources, we aim to advance both Telugu computational linguistics and the broader field of computational prosody, while contributing to the preservation and study of this rich literary tradition.
+
+\section{Related Work}
+
+Research in computational prosody has evolved from rule-based approaches for classical languages to modern machine learning techniques for contemporary poetry analysis. This section reviews relevant work in Telugu chandassu analysis, broader computational prosody, and evaluation methodologies.
+
+\subsection{Telugu Tokenization Approaches}
+Existing Telugu tokenization research has predominantly focused on word-level and subword-level segmentation for general NLP applications. SentencePiece \cite{kudo-richardson-2018-sentencepiece} and IndicNLP Suite \cite{kakwani-etal-2020-indicnlpsuite} provide comprehensive tokenization frameworks for Telugu, employing BPE, WordPiece \cite{wu2016googlesneuralmachinetranslation}, and rule-based approaches to handle morphological complexity, script normalization, and vocabulary construction for machine translation and language modeling tasks. Recent multilingual tokenization studies \cite{muennighoff-etal-2023-crosslingual} have evaluated Telugu tokenizer performance using efficiency metrics like Normalized Sequence Length across different encoding strategies, while approaches like \cite{karthika2025multilingualtokenizationlensindian} address agglutinative properties and syntactic boundaries in Telugu text processing. However, these existing approaches operate at granularities incompatible with prosodic analysis requirements. Conventional tokenizers optimize for computational efficiency and morpheme-based segmentation to support downstream NLP tasks, but fail to preserve the phonological properties essential for metrical pattern recognition.
+
+
+\subsection{Traditional Telugu Prosody}
+Classical Telugu prosody is comprehensively documented in foundational texts such as Chhan’doo vyaakarand-amu \cite{chando_vyakaranamu} and Telugu Vari Sampoorna Pedda Bala Siksha \cite{pedda_bala_siksha}. These works describe the theoretical framework for chandassu analysis, defining the constraints governing different padyam types, including ganam sequences, yati patterns, and prasa relationships. While these texts provide essential domain knowledge, they rely on manual analysis and lack computational formalization.
+
+\subsection{Telugu Computational Prosody}
+Early computational approaches to Telugu chandassu emerged in the 2010s. Rama N, and Meenakshi Lakshmanan \cite{rama_n} developed algorithms for metrical classification across multiple languages including Sanskrit and English, incorporating euphonic conjunction rules for verse correction. However, their approach assumes structural markers (punctuation) to identify paadams, limiting applicability to traditional Telugu texts where such markers are absent.
+
+Raghu Korrapati, and TVVV Prasad \cite{raghu_korrapati} introduced a natural language application for chandassu determination and word prediction in Telugu poetry. They categorized word complexity into three levels (simple, medium, complex) but provided no quantitative evaluation metrics or systematic assessment of chandassu correctness.
+
+More recently, I. Reddy Sekhar Reddy, and M.Humera Khanam \cite{reddy_sekhar_reddy} proposed a Chandassu Recognizer (C.R.) system, while Nelli Ramesh, and S Vijay Kumar \cite{nelli_ramesh} developed VerseMetrics, a Python-based Telugu chandas analyzer. Both works claim accuracy improvements but lack detailed dataset descriptions, standardized evaluation metrics, and reproducible experimental protocols.
+
+\subsection{Computational Prosody in Other Languages}
+The broader field of computational prosody has seen significant advances in recent years. Navarro-Colorado B \cite{navarro_colorado} demonstrated topic modeling approaches for Spanish poetry analysis, while Thomas Haider \cite{haider2021metricaltaggingwildbuilding} developed universal tools for metrical tagging across multiple languages. These works highlight the importance of standardized datasets and robust evaluation frameworks- elements currently missing in Telugu chandassu research.
+
+\subsection{Research Gaps}
+Our analysis reveals several critical gaps in existing Telugu chandassu research:
+
+\begin{enumerate}
+\item \textbf{Dataset Limitations:} No publicly available, annotated datasets for Telugu metrical poetry analysis
+\item \textbf{Prosodic Tokenization:} Absence of specialized tokenizers for human perceivable aksharam level segmentation that preserve phonological weight properties essential for metrical analysis
+\item \textbf{Algorithmic Rigor:} Limited technical detail and reproducibility in existing approaches
+\item \textbf{Evaluation Metrics:} Absence of standardized quantitative measures for chandassu correctness assessment
+\item \textbf{Systematic Evaluation:} Lack of comprehensive experimental validation against established benchmarks
+\end{enumerate}
+These gaps motivate our work's focus on dataset creation, specialized tokenizer design, algorithmic development, and standardized evaluation methodologies for Telugu computational prosody.
+
+\section{Data Collection}
+
+\subsection{Data Acquisition}
+We constructed the Chandassu dataset through systematic collection and rigorous validation of Telugu metrical poetry from digital archives. Our primary data source was andhrabharati.com, a comprehensive repository of classical Telugu literature containing digitized satakams (poetry collections) from various historical periods and authors. The data acquisition process employed targeted web scraping techniques to extract padyams from individual satakam pages, preserving the original text formatting and metadata. We developed custom scraping scripts that respected the website's structure while ensuring complete extraction of poetic content, including categorical classifications where available.
+
+\subsection{Quality Assurance and Validation}
+We implemented a two-stage validation process to ensure dataset integrity and annotation accuracy. In the first iteration, we manually verified each scraped padyam against its original source to ensure textual fidelity and correct Unicode representation. The second iteration occurred post-algorithm implementation, where we validated the automatically generated LaghuvuGuruvu sequences at the aksharam token level, verifying each prosodic annotation against classical Telugu metrical rules to ensure accurate laghuvu-guruvu classification and successful pattern generation across all 4,651 padyams.
+
+\subsection{Dataset Structure and Composition}
+
+The final Chandassu dataset comprises 4,651 carefully curated Telugu padyams spanning three primary prosodic classes and eight distinct types, as detailed in Table~\ref{tab:chandassu_dataset}. Each entry in the dataset contains the following structured attributes:
+
+\begin{enumerate}
+\item \textit{type:} type of padyam
+\item \textit{padyam:} padyam text
+\item \textit{class:} class of padyam
+\item \textit{satakam:} satakam that the padyam belongs to
+\item \textit{lg:} LaghuvuGuruvu data
+\end{enumerate}
+
+The distribution across padyam classes is shown in Table~\ref{tab:chandassu_dataset_class}, and padyam types is shown in Table~\ref{tab:chandassu_dataset_type}, reflects both the historical prevalence of different metrical forms and the availability of digitized texts. Aataveladi consists the largest category with 995 padyams, while Saardulamu contains the fewest with 290 padyams. Figure~\ref{fig:padyam_distribution_per_satakam} illustrates the distribution of padyams across individual satakams, revealing the diversity of sources contributing to our dataset and ensuring broad representation of Telugu metrical traditions.
+
+\begin{figure}[t!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Padyam_Distribution_Per_Satakam.png}
+\end{center}
+\caption{Distribution of padyams across satakams in Chandassu dataset}
+\label{fig:padyam_distribution_per_satakam}
+\end{figure}
+
+\begin{table}[b!]
+\caption{Distribution of padyams by prosodic class in Chandassu dataset}
+\label{tab:chandassu_dataset_class}
+\begin{tabular}{ll}
+\toprule
+Prosodic Class& Padyam Count\\
+\midrule
+Vruttamu& 1625\\
+Jaathi& 683\\
+Vupajaathi& 2343\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[b!]
+\caption{Distribution of padyams by type in Chandassu dataset}
+\label{tab:chandassu_dataset_type}
+\begin{tabular}{ll}
+\toprule
+Padyam Type& Padyam Count\\
+\midrule
+Vutpalamaala& 329\\
+Champakamaala& 389\\
+Saardulamu& 290\\
+Mattebhamu& 617\\
+Kandamu& 683\\
+Teytageethi& 676\\
+Aataveladi& 995\\
+Seesamu& 672\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Dataset Enhancement with evaluation metrics}
+
+Following algorithm development and evaluation (detailed in Section 4, 5), we augmented the dataset with computed evaluation scores that quantify various aspects of metrical correctness. These augmented annotations transform Chandassu dataset from a simple text corpus into a comprehensive evaluation benchmark for computational prosody research, enabling systematic assessment of algorithmic performance across multiple dimensions of metrical analysis.
+
+\subsection{Dataset Availability and Reproducibility}
+To promote reproducibility and facilitate future research in Telugu computational poetry, we make the complete Chandassu dataset available on: \url{https://github.com/BodduSriPavan-111/chandassu}. The dataset includes detailed documentation of collection procedures, validation protocols, and annotation guidelines, ensuring transparent and reproducible research practices in this emerging field.
+
+\section{Proposed Methodology}
+
+Our computational framework for Telugu chandassu analysis employs a modular architecture that combines traditional prosodic knowledge with algorithmic processing. The system processes input padyams step-by-step: beginning with aksharam tokenization to identify human-perceivable character units, followed by prosodic pattern generation to determine laghuvu-guruvu sequences, and concluding with comprehensive metrical validation against predefined chandassu constraints. Figure~\ref{fig:chandassu_architecture} illustrates the complete pipeline architecture, comprising seven interconnected components that collectively enable automated chandassu identification and evaluation.
+
+
+\begin{enumerate}
+\item \textbf{nidhi}: Telugu character classification system containing the complete varnamala (alphabet) with phonological and orthographic categorizations essential for prosodic analysis
+\item \textbf{panimuttu}: Utility module providing specialized functions for vowel-consonant operations
+\item \textbf{laghuvu\_guruvu}: Prosodic analysis engine integrating the AksharamTokenizer and LaghuvuGuruvu generator for syllabic weight determination
+\item \textbf{ganam}: Ganam pattern repository containing mappings between LaghuvuGuruvu sequences and traditional metrical units
+\item \textbf{padyam\_config}: Configuration storing predefined constraints for each padyam type, including syllabic requirements, structural patterns, and prosodic rules
+\item \textbf{check\_lakshanam}: Constraint validation module for verifying adherence to traditional prosodic requirements such as yati (caesura) and prasa (alliteration)
+\item \textbf{padya\_bhedam}: Integration module that orchestrates the evaluation process and generates comprehensive metrical assessments
+\end{enumerate}
+
+\begin{figure}[t!]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{Chandassu_Architecture_Color.png}
+\end{center}
+\caption{Proposed computational framework architecture for Telugu metrical poetry analysis}
+\label{fig:chandassu_architecture}
+\end{figure}
+
+
+\subsection{Aksharam Tokenizer}
+The AksharamTokenizer addresses the fundamental challenge of identifying perceptually meaningful units in Telugu text for prosodic analysis. Unlike conventional tokenization approaches that operate at word or morpheme levels, our tokenizer extracts Aksharam Tokens—the minimal perceivable units that serve as the basis for metrical analysis in Telugu poetry.
+The tokenization process handles complex orthographic phenomena, including conjunct consonants (dwitwaaksharamulu, samyuktaaksharamulu), vowel diacritics, and grapheme clusters that are characteristic of Telugu script. The Algorithm~\ref{algo:aksharamtokenizer} processes input text character by character, applying rule-based logic to group Unicode codepoints into coherent aksharam units while preserving their prosodic integrity. Word boundaries are identified through whitespace detection, enabling proper segmentation of paadams (poetic lines) essential for subsequent metrical analysis.
+
+\begin{algorithm}
+\item[Algorithm 1] AksharamTokenizer
+\item[Input] INPUT\_TEXT $\in$ String - Telugu padyam text in Unicode format
+\item[Output] List of prosodically segmented aksharam tokens
+\item[Step 1] temp\_l= re.findall(r"\textbackslash X", INPUT\_TEXT)
+\item[Step 2] l= Remove special characters, alphabets, and numbers from temp\_l
+\item[Step 3] index= 0
+\item[Step 4] text= []
+\item[Step 5] temp= ""
+\item[Step 6] \textbf{for} index from 0 to len(l) \textbf{do}
+\item[Step 7] \quad l[index]= Remove Ara Sunna from l[index]
+\item[Step 8] \quad \textbf{if} l[index].isspace \textbf{then}
+\item[Step 9] \quad \quad pass
+\item[Step 10] \quad \textbf{else if} l[index].endswith(POLLU) and temp== "" and index<(len(l)-1) and not l[index+1].isspace \textbf{then}
+\item[Step 11] \quad \quad temp+= l[index]   
+\item[Step 12] \quad \textbf{else if} l[index].endswith(POLLU) and temp != "" and not l[index+1].isspace \textbf{then}
+\item[Step 13] \quad \quad temp+= l[index]
+\item[Step 14] \quad \textbf{else if} l[index].endswith(POLLU) and (index+1 == len(l) or l[index+1].isspace ) \textbf{then}
+\item[Step 15] \quad \quad text[-1]+= l[index] 
+\item[Step 16] \quad \textbf{else if} (not l[index].endswith(POLLU)) and temp != "" \textbf{then}
+\item[Step 17] \quad \quad text.append( temp+l[index] )
+\item[Step 18] \quad \quad temp= ""
+\item[Step 19] \quad \textbf{else if} (not l[index].endswith(POLLU)) and temp == "" \textbf{then}
+\item[Step 20] \quad \quad text.append( l[index] )
+\item[Step 21] \quad \quad temp= ""
+\item[Step 22] \quad \textbf{end if}
+\item[Step 23] \textbf{end for}
+\item[Step 24] \textbf{return} text
+\label{algo:aksharamtokenizer}
+\end{algorithm}
+
+\subsection{LaghuvuGuruvu Generator}
+
+The LaghuvuGuruvu Generator, described in Algorithm~\ref{algo:laghuvuguruvu_generator}, transforms the sequence of aksharam tokens into prosodic representations by classifying each unit as either Laghuvu (light- |) or Guruvu (heavy- U) based on traditional Telugu prosodic rules \cite{chando_vyakaranamu,pedda_bala_siksha}. This binary classification forms the foundation for all subsequent metrical analysis and pattern matching.
+The generation process incorporates phonological duration rules, orthographic conventions, and contextual factors that influence syllabic weight determination. The algorithm considers vowel length, consonant clusters, and conjunct formations that affect prosodic realization. Due to ambiguity in classical prosodic treatment of conjunct consonants containing the subscript "Ra" (Ra-vattu), we adopt a systematic approach of evaluating such aksharams without the subscript component to ensure consistent prosodic weight determination.
+
+\begin{algorithm}
+\item[Algorithm 2] LaghuvuGuruvuGenerator
+\item[Input] INPUT\_TEXT $\in$ String - Telugu padyam text in Unicode format
+\item[Output] List of aksharam tokens with corresponding laghuvu-guruvu annotations
+
+\item[Step 1] l= AksharamTokenizer(INPUT\_TEXT)
+\item[Step 2] marking= []
+\item[Step 3] \textbf{for} index from 0 to len(l) \textbf{do}
+\item[Step 4] \quad \textbf{if} index < (len(l)-1) \textbf{do}
+\item[Step 5] \quad \quad x= re.findall(r"\textbackslash X", l[index+1])
+\item[Step 6] \quad \quad \textbf{if} x[-1].endswith('POLLU') \textbf{then}
+\item[Step 7] \quad \quad \quad x= ''.join(x[:-1]) 
+\item[Step 8] \quad \quad \textbf{else}
+\item[Step 9] \quad \quad \quad x= "".join(x)
+\item[Step 10] \quad \quad \textbf{end if}
+\item[Step 11] \quad \quad d= frequency\_counter(x)
+\item[Step 12] \quad \quad del d["Ra"]
+\item[Step 13] \quad \quad temp\_count= 0
+\item[Step 14] \quad \quad \textbf{for} i in d \textbf{do}
+\item[Step 15] \quad \quad \quad \textbf{if} i in HALLULU \textbf{then}
+\item[Step 16] \quad \quad \quad \quad temp\_count+= d[i]
+\item[Step 17] \quad \quad \quad \textbf{end if}
+\item[Step 18] \quad \quad \textbf{end for}
+\item[Step 19] \quad \quad \textbf{if} 'Ra' in l[index+1] and ((temp\_count==0) or (temp\_count == 1  and (not l[index+1].startswith('Ra')))) \textbf{then}
+\item[Step 20] \quad \quad \quad marking.append( lg\_map[l[index][-1]] )
+\item[Step 21] \quad \quad \textbf{else}
+\item[Step 22] \quad \quad \quad count= 0
+\item[Step 23] \quad \quad \quad \textbf{for} j in list(l[index+1]) \textbf{do}
+\item[Step 24] \quad \quad \quad \quad \textbf{if} j in varnamala \textbf{then}
+\item[Step 25] \quad \quad \quad \quad \quad count+= 1
+\item[Step 26] \quad \quad \quad \quad \textbf{end if}
+\item[Step 27] \quad \quad \quad \textbf{end for}
+\item[Step 28] \quad \quad \quad \textbf{if} count > 1 and not l[index+1].endswith(POLLU) \textbf{then}
+\item[Step 29] \quad \quad \quad \quad marking.append( "U" )
+\item[Step 30] \quad \quad \quad \textbf{else if} count > 1 and l[index+1].endswith(POLLU) and re.findall( r"\textbackslash X", l[index+1])[0].endswith(POLLU) \textbf{then}
+\item[Step 31] \quad \quad \quad \quad marking.append( "U" )
+\item[Step 32] \quad \quad \quad \textbf{else if} count > 1 and l[index+1].endswith(POLLU) \textbf{then}
+\item[Step 33] \quad \quad \quad \quad marking.append( lg\_map[l[index][-1]] )
+\item[Step 34] \quad \quad \quad \textbf{else}
+\item[Step 35] \quad \quad \quad \quad marking.append( lg\_map[l[index][-1]] )
+\item[Step 36] \quad \quad \quad \textbf{end if}
+\item[Step 37] \quad \quad \textbf{end if}
+\item[Step 38] \quad \textbf{else if} l[index][-1] in lg\_map \textbf{then}
+\item[Step 39] \quad \quad marking.append( lg\_map[l[index][-1]] )
+\item[Step 40] \quad \textbf{end if}
+\item[Step 41] \textbf{end for}
+\item[Step 42] \textbf{return} list(zip(l, marking))
+\label{algo:laghuvuguruvu_generator}
+\end{algorithm}
+
+
+\subsection{Padyabhedam Checker}
+
+The Padyabhedam Checker serves as the primary evaluation engine, assessing generated LaghuvuGuruvu patterns against type-specific constraints stored in the configuration. This module implements a comprehensive validation framework that examines multiple dimensions of metrical correctness.
+The checker evaluates structural conformity including paadam count, aksharam count per line, and overall syllabic requirements. It performs ganam sequence matching to verify adherence to prescribed metrical patterns and validates yati placement according to traditional caesura rules. Additionally, the module assesses prasa patterns to ensure proper alliterative relationships within and across paadams. Each evaluation dimension generates individual scores that contribute to the overall Chandassu Score, providing granular feedback on metrical performance.
+
+\begin{algorithm}
+\item[Algorithm 3] Yati Check
+
+\item[Step 1] \textbf{if} first\_letter == None and yati\_sthanam\_letter == None \textbf{then}
+\item[Step 2] \quad first\_letter= paadam[0]
+\item[Step 3] \quad yati\_sthanam\_letter= paadam[yati\_sthanam-1]
+\item[Step 4] \textbf{end if}
+\item[Step 5] first\_letter= first\_letter.replace([PURNA\_BINDU, VISARGA], "")
+\item[Step 6] yati\_sthanam\_letter= yati\_sthanam\_letter.replace([PURNA\_BINDU, VISARGA], "")
+\item[Step 7] chihnam\_a= extract\_gunintha\_chihnam(first\_letter)
+\item[Step 8] chihnam\_b= extract\_gunintha\_chihnam(yati\_sthanam\_letter)
+\item[Step 9] chihna\_yati= False  \# Chihna Yati\: Yati checking for ACHHULU
+\item[Step 10] \textbf{for} i in yati \textbf{do}    
+\item[Step 11] \quad \textbf{if} chihnam\_a in i \textbf{then}
+\item[Step 12] \quad \quad \textbf{if} chihnam\_b in i \textbf{then}
+\item[Step 13] \quad \quad \quad chihna\_yati= True
+\item[Step 14] \quad \quad \textbf{else}
+\item[Step 15] \quad \quad \quad \textbf{return} False
+\item[Step 16] \quad \quad \textbf{end if}
+\item[Step 17] \quad \textbf{end if}
+\item[Step 18] \textbf{end for}
+\item[Step 19] akshara\_yati= False \# Akshara Yati\: Yati check for NON-ACCHULU
+\item[Step 20] \textbf{for} i in list(set(extract\_aksharam(first\_letter))) \textbf{do}
+\item[Step 21] \quad \textbf{for} j in yati \textbf{do}
+\item[Step 22] \quad \quad \textbf{if} i in j \textbf{then}
+\item[Step 23] \quad \quad \quad \textbf{for} k in list(set(extract\_aksharam(yati\_sthanam\_letter))) \textbf{do}
+\item[Step 24] \quad \quad \quad \quad \textbf{if} k in j \textbf{then}
+\item[Step 25] \quad \quad \quad \quad \quad akshara\_yati= True
+\item[Step 26] \quad \quad \quad \quad \quad \textbf{break}
+\item[Step 27] \quad \quad \quad \textbf{end for}
+\item[Step 28] \quad \quad \quad \textbf{if} akshara\_yati == True \textbf{then}
+\item[Step 29] \quad \quad \quad \quad \textbf{break}
+\item[Step 30] \quad \quad \quad \textbf{end if}
+\item[Step 31] \quad \quad \textbf{end if}
+\item[Step 32] \quad \textbf{end for}
+\item[Step 33] \textbf{end for}
+\item[Step 34] \textbf{if} not akshara\_yati \textbf{then}
+\item[Step 35] \quad \textbf{return} False
+\item[Step 36] \textbf{end if}
+\item[Step 37] \textbf{if} chihna\_yati and akshara\_yati \textbf{then}
+\item[Step 38] \quad \textbf{return} True
+\item[Step 39] \textbf{else}
+\item[Step 40] \quad \textbf{return} False
+\item[Step 41] \textbf{end if}
+\end{algorithm}
+
+
+\begin{algorithm}
+\item[Algorithm 4] Prasa Yati Check
+
+\item[Step 1] \textbf{if} type== "kandamu" \textbf{then}
+\item[Step 2] \quad padamwise\_ganam\_data= [padamwise\_ganam\_data[i-1] for i in config["yati\_paadalu"]] 
+\item[Step 3] \textbf{end if}
+\item[Step 4] yati\_match= []
+\item[Step 5] \textbf{for} row in padamwise\_ganam\_data \textbf{do}
+\item[Step 6] \quad \textbf{if} (len(row[0][0])>1) and (len(row[config["yati\_sthanam"][0]-1][0])>1) \textbf{then}
+\item[Step 7] \quad \quad first\_letter= [a[0] for a in row[0][0]]
+\item[Step 8] \quad \quad yati\_sthanam\_letter= row[config["yati\_sthanam"][0]-1][0][config["yati\_sthanam"][1]]
+\item[Step 9] \quad \quad generic\_yati= check\_yati(first\_letter= first\_letter[0], yati\_sthanam\_letter= yati\_sthanam\_letter[0], verbose= verbose)
+\item[Step 10] \quad \quad \textbf{if} only\_generic\_yati== True \textbf{then}
+\item[Step 11] \quad \quad \quad yati\_match.append(generic\_yati)
+\item[Step 12] \quad \quad \quad \textbf{continue}
+\item[Step 13] \quad \quad \textbf{end if}
+\item[Step 14] \quad \quad yati\_sthanam\_letter= [a[0] for a in row[config["yati\_sthanam"][0]-1][0]][:2]
+\item[Step 15] \quad \quad prasa\_yati\_match= False
+\item[Step 16] \quad \quad \textbf{if} generic\_yati== True \textbf{then}
+\item[Step 17] \quad \quad \quad yati\_match.append( True )
+\item[Step 18] \quad \quad \textbf{else}
+\item[Step 19] \quad \quad hraswa\_deergham\_flag\_1= " "
+\item[Step 20] \quad \quad \quad \textbf{if} first\_letter[0][-1] in gunintha\_chihnam \textbf{then}
+\item[Step 21] \quad \quad \quad \quad hraswa\_deergham\_flag\_1= first\_letter[0][-1]
+\item[Step 22] \quad \quad \quad \textbf{else}
+\item[Step 23] \quad \quad \quad \quad hraswa\_deergham\_flag\_1= " "
+\item[Step 24] \quad \quad \quad \textbf{end if}
+\item[Step 25] \quad \quad \quad hraswa\_deergham\_flag\_2= ""
+\item[Step 26] \quad \quad \quad \textbf{if} yati\_sthanam\_letter[0][-1] in gunintha\_chihnam \textbf{then}
+\item[Step 27] \quad \quad \quad \quad hraswa\_deergham\_flag\_2= yati\_sthanam\_letter[0][-1]
+\item[Step 28] \quad \quad \quad \textbf{else}
+\item[Step 29] \quad \quad \quad \quad hraswa\_deergham\_flag\_2= " "
+\item[Step 30] \quad \quad \quad \textbf{end if}
+\item[Step 31] \quad \quad \quad l1= remove\_gunintha\_chihnam(first\_letter[1])
+\item[Step 32] \quad \quad \quad l2= remove\_gunintha\_chihnam(yati\_sthanam\_letter[1])
+\item[Step 33] \quad \quad \quad \textbf{if} (hraswa\_deergham\_flag\_1 in hraswa\_chihnam and hraswa\_deergham\_flag\_2 in hraswa\_chihnam) \textbf{then}
+\item[Step 34] \quad \quad \quad \quad \textbf{if}  l1 == l2 \textbf{then}
+\item[Step 35] \quad \quad \quad \quad \quad prasa\_yati\_match= True
+\item[Step 36] \quad \quad \quad \quad \textbf{else}
+\item[Step 37] \quad \quad \quad \quad \quad \textbf{pass}
+\item[Step 38] \quad \quad \quad \quad \textbf{end if}
+\item[Step 39] \quad \quad \quad \textbf{elif} (hraswa\_deergham\_flag\_1 in deergha\_chihnam and hraswa\_deergham\_flag\_2 in deergha\_chihnam ) \textbf{then}
+\item[Step 40] \quad \quad \quad \quad \textbf{if} l1 == l2 \textbf{then}
+\item[Step 41] \quad \quad \quad \quad \quad prasa\_yati\_match= True
+\item[Step 42] \quad \quad \quad \quad \textbf{else}
+\item[Step 43] \quad \quad \quad \quad \quad \textbf{pass}
+\item[Step 44] \quad \quad \quad \quad \textbf{end if}
+\item[Step 45] \quad \quad \quad \textbf{else}
+\item[Step 46] \quad \quad \quad \quad \textbf{pass}
+\item[Step 47] \quad \quad \quad \textbf{end if}
+\item[Step 48] \quad \quad \quad \textbf{if} prasa\_yati\_match \textbf{then}
+\item[Step 49] \quad \quad \quad \quad yati\_match.append( True )
+\item[Step 50] \quad \quad \quad \textbf{else}
+\item[Step 51] \quad \quad \quad \quad \textbf{pass}
+\item[Step 52] \quad \quad \quad \textbf{end if}
+\item[Step 53] \quad \quad \textbf{end if}
+\item[Step 54] \quad \quad \textbf{if} generic\_yati == False and prasa\_yati\_match == False \textbf{then}
+\item[Step 55] \quad \quad \quad yati\_match.append( False )
+\item[Step 56] \quad \quad \textbf{end if}
+\item[Step 57] \quad \textbf{else}
+\item[Step 58] \quad \quad yati\_match.append( False )
+\item[Step 59] \quad \textbf{end if}  
+\item[Step 60] \textbf{end for}
+\item[Step 61] \textbf{return} yati\_match
+\end{algorithm}
+
+
+
+\begin{algorithm}
+\item[Algorithm 4] Prasa Yati Check
+
+\item[Step 1] lg\_data= LaghuvuGuruvu\_Generator(INPUT\_TEXT)
+\item[Step 2] config= CONFIGURATION\_OF\_PADYAM to evaluate
+\item[Step 3] ganamulu= GANAM\_TO\_SYMBOL\_MAP
+\item[Step 4] r\_ganamulu= SYMBOL\_TO\_GANAM\_MAP
+\item[Step 5] padamwise\_ganam\_data= []
+\item[Step 6] gana\_kramam\_score= 0
+\item[Step 7] end= 0
+\item[Step 8] paadam\_count= 0
+\item[Step 9] \textbf{for} line from 0 to len(config["gana\_kramam"])  \textbf{do}
+\item[Step 10] \quad ganam\_data= []
+\item[Step 11] \quad \textbf{for} j from 0 to len(config["gana\_kramam"][line])  \textbf{do}
+\item[Step 12] \quad \quad ganam\_match\_flag= False
+\item[Step 13] \quad \quad \textbf{for} i in config["gana\_kramam"][line][j]  \textbf{do}
+\item[Step 14] \quad \quad \quad ganam= tuple([k[1] for k in lg\_data[end: end+len(ganamulu[i])]])
+\item[Step 15] \quad \quad \quad  \textbf{if} r\_ganamulu[ ganam ] equals to i  \textbf{then}
+\item[Step 16] \quad \quad \quad \quad ganam\_data.append([lg\_data[end:end+len(ganamulu[i])],r\_ganamulu[ganam]])
+\item[Step 17] \quad \quad \quad \quad gana\_kramam\_score+= 1
+\item[Step 18] \quad \quad \quad \quad ganam\_match\_flag= True
+\item[Step 19] \quad \quad \quad \quad  \textbf{break}
+\item[Step 20] \quad \quad \quad \textbf{else if} Exception occurred  \textbf{then}
+\item[Step 21] \quad \quad \quad \quad pass
+\item[Step 22] \quad \quad \quad \textbf{end if}
+\item[Step 23] \quad \quad \textbf{end for}
+\item[Step 24] \quad \quad \textbf{if} ganam\_match\_flag == False  \textbf{then}
+\item[Step 25] \quad \quad \quad ganam\_data.append([lg\_data[end: end+len(ganamulu[i])],"UnMatched"])
+\item[Step 26] \quad \quad  \textbf{end if}
+\item[Step 27] \quad \quad end+= len(ganamulu[i])
+\item[Step 28] \quad  \textbf{end for}
+\item[Step 29] \quad  \textbf{if} len(ganam\_data[0][0])>1  \textbf{then}
+\item[Step 30] \quad \quad paadam\_count+= 1
+\item[Step 31] \quad  \textbf{end if}
+\item[Step 32] \quad padamwise\_ganam\_data.append(ganam\_data)
+\item[Step 33] \quad  \textbf{if} end>=len(lg\_data)  \textbf{then}
+\item[Step 34] \quad \quad  \textbf{break}
+\item[Step 35] \textbf{end for}
+\item[Step 36] prasa\_yati\_match= check\_prasa\_yati(padamwise\_ganam\_data, type, config, verbose, only\_generic\_yati= config["only\_generic\_yati"])
+\item[Step 37] N\_PAADALU= config["n\_paadalu"]
+\item[Step 38] total\_yati\_paadalu= len(config["yati\_paadalu"])
+\item[Step 39] \textbf{if} type== "seesamu"  \textbf{then}
+\item[Step 40] \quad paadam\_count= paadam\_count/2
+\item[Step 41] \textbf{end if}
+\item[Step 42] score= {'n\_paadalu':  paadam\_count/ N\_PAADALU, 'gana\_kramam': gana\_kramam\_score/ sum([len(i) for i in config["gana\_kramam"]]), 'yati\_sthanam': sum(prasa\_yati\_match)/ total\_yati\_paadalu}
+\item[Step 43] \textbf{if} config.get("n\_aksharalu")  \textbf{then}
+\item[Step 44] \quad aksharam\_count= 0
+\item[Step 45] \quad \textbf{for} i in padamwise\_ganam\_data  \textbf{do}
+\item[Step 46] \quad \quad \textbf{for} j in i \textbf{do}
+\item[Step 47] \quad \quad \quad aksharam\_count+= len(j[0])
+\item[Step 48] \quad \quad \textbf{end for}
+\item[Step 49] \quad \textbf{end for}
+\item[Step 50] \quad subtract\_factor= len(lg\_data) - aksharam\_count
+\item[Step 51] \quad score["n\_aksharalu"]= (aksharam\_count-subtract\_factor)/ (N\_PAADALU*config["n\_aksharalu"])
+\item[Step 52] \textbf{end if}
+\item[Step 53] \textbf{if} config.get("prasa") \textbf{then}
+\item[Step 54] \quad index= 2    \# Second letter
+\item[Step 55] \quad frequency= {}
+\item[Step 56] \quad \textbf{for} i in padamwise\_ganam\_data \textbf{do}
+\item[Step 57] \quad \quad \textbf{if} no Exception \textbf{then}
+\item[Step 58] \quad \quad \quad aksharam= remove\_gunintha\_chihnam(i[0][0][index-1][0])
+\item[Step 59] \quad \quad \quad frequency[aksharam]= frequency.get(aksharam,0)+ 1
+\item[Step 60] \quad \quad \textbf{else}
+\item[Step 61] \quad \quad \quad \textbf{pass}
+\item[Step 62] \quad \textbf{end for}
+\item[Step 63] \quad score["prasa"]= max(frequency.values())/ N\_PAADALU
+\item[Step 64] \textbf{end if}
+\item[Step 65] overall\_score= sum(score.values())/ len(score)
+\item[Step 66] \textbf{return} {"chandassu\_score": overall\_score, "micro\_score": score}
+\end{algorithm}
+
+\subsection{Integration and Processing Pipeline}
+The complete processing pipeline described in Figure~\ref{fig:chandassu_architecture}, operates through seamless integration of all modules, beginning with raw padyam input and culminating in comprehensive metrical assessment. The entire framework is implemented in Python programming language \cite{10.5555/1593511}. Error handling mechanisms address common issues including malformed input, incomplete padyams, and edge cases in aksharam identification. The modular design enables independent testing and validation of each component while supporting extensibility for additional prosodic features and evaluation metrics.
+
+\section{Evaluation Metrics}
+We propose a comprehensive evaluation framework consisting of five fine-grained metrics that assess individual prosodic constraints and an aggregated Chandassu Score for overall metrical correctness:
+
+\begin{enumerate}
+
+\item \textit{n\_aksharaalu score} ($c_{1}$): The ratio of number of aksharam tokens present in given input text to the number of expected aksharam tokens in particular padyam.
+
+\item \textit{n\_paadalu score} ($c_{2}$): The ratio of number of paadams found in the given input text to the expected number of paadams in the padyam.
+Note: For instance, a line is considered to be paadam if atleast one aksharam token is present during calculation of paadamwise gana kramam data.
+
+\item \textit{gana\_kramam score} ($c_{3}$): The ratio of total number of ganams matched sequentially to the total expected number of ganams for the padyam
+
+\item  \textit{yati score} ($c_{4}$): The ratio of number of paadams of yati match to the total number of paadams expected to satisfy yati in the padyam 
+
+\item \textit{prasa score} ($c_{5}$): The ratio of frequency of modal prasa aksharam token to the expected number of paadams for the padyam
+
+\end{enumerate}
+
+\begin{align}
+C = \frac{1}{n} \sum_{i=0}^{n} c_i, \quad \text{where } c_i \text{ is each fine-grained constraint}\label{eq:chandassu_score}
+\end{align}
+
+Our proposed Chandassu Score ($C$) aggregates these individual constraints through arithmetic averaging as defined in Equation~\ref{eq:chandassu_score}, providing a unified quantitative measure of metrical correctness that ranges from 0 to 1, where higher values indicate greater adherence to traditional prosodic requirements for the corresponding padyam type. 
+
+This framework evaluates structural and prosodic correctness while assuming semantic validity of the input text; semantic evaluation could be integrated into future versions of the Chandassu Score. Also, this framework focuses on individual padyam assessment rather than collection-level metrics, as our primary objective is quantifying metrical correctness at the poem level. Future extensions could incorporate satakam-level evaluation through an additional \textit{n\_padyam score ($c_{6}$)} measuring completeness of poetry collections, thereby expanding the framework's applicability to broader literary analysis tasks.
+
+\section{Results and Discussion}
+
+\begin{figure}[t!]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{Evaluation_Benchmark_per_Class.png}
+\end{center}
+\caption{Performance evaluation across prosodic classes}
+\label{fig:evaluation_benchmark_class}
+\end{figure}
+
+\begin{figure}[t!]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{Evaluation_Benchmark_per_Type.png}
+\end{center}
+\caption{Performance evaluation across padyam types}
+\label{fig:evaluation_benchmark_type}
+\end{figure}
+
+\begin{table}[b!]
+\caption{Performance evaluation by prosodic class (values in \%)}
+\label{tab:evaluation_scores_classes_padyams}
+\begin{tabular}{lllllll}
+\toprule
+Prosodic Class& $c_{na}$& $c_{np}$& $c_{gk}$& $c_{yt}$& $c_{pr}$& $C$\\
+\midrule
+Vruttamu& \textbf{99.43}& 99.94& 93.78& \textbf{81.38}& \textbf{96.12}& \textbf{94.13} \\
+Jaathi& -& \textbf{100.00}& 92.85& 73.94& 90.78& 89.39 \\
+Vupajaathi& -& 99.91& \textbf{94.12}& 78.21& -& 90.75 \\
+\bottomrule
+\end{tabular}
+\end{table}
+ 
+\begin{table}[b!]
+\caption{Performance evaluation by padyam type (values in \%)}
+\label{tab:evaluation_scores_types_padyams}
+\begin{tabular}{lllllll}
+\toprule
+Padyam Type& $c_{na}$& $c_{np}$& $c_{gk}$& $c_{yt}$& $c_{pr}$& $C$ \\
+\midrule
+Vutpalamaala& 98.97& 99.70& 91.87& 77.36& 94.60& 92.50 \\
+Champakamaala& 99.54& \textbf{100.00}& \textbf{96.02}& \textbf{83.48}& 95.69& \textbf{94.95} \\
+Saardulamu& 99.35& \textbf{100.00}& 94.88& 79.66& \textbf{97.59}& 94.29 \\
+Mattebhamu& \textbf{99.63}& \textbf{100.00}& 92.89& 83.02& 96.52& 94.41 \\
+Kandamu& -& \textbf{100.00}& 92.85& 73.94& 90.78& 89.39 \\
+Teytageethi& -& 99.85& 92.85& 76.81& -& 89.84 \\
+Aataveladi& -& \textbf{100.00}& 95.43& 80.18& -& 91.87 \\
+Seesamu& -& 99.83& 93.46& 76.71& -& 90.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Our computational framework achieves strong performance across all proposed evaluation metrics, establishing the first quantitative benchmark for Telugu chandassu analysis. The algorithm attains an overall Chandassu Score of 91.73\%, demonstrating robust metrical pattern recognition and validation capabilities. Individual metric performance reveals varying degrees of constraint satisfaction: structural metrics show exceptional accuracy with \textit{n\_aksharalu score} of 99.43\% and \textit{n\_paadalu score} of 99.93\%, indicating near-perfect identification of syllabic count and line structure requirements. The \textit{gana\_kramam score} of 93.82\% reflects strong ganam sequence matching, while the \textit{prasa score} of 94.54\% demonstrates effective alliteration pattern recognition. The \textit{yati score} of 78.69\% represents the most challenging constraint, reflecting the inherent complexity of caesura identification in traditional Telugu poetry.
+
+Performance analysis across prosodic classes and padyam types, detailed in Table~\ref{tab:evaluation_scores_classes_padyams}, ~\ref{tab:evaluation_scores_types_padyams} and Figure ~\ref{fig:evaluation_benchmark_class}, ~\ref{fig:evaluation_benchmark_type} respectively, reveals systematic variations in metric performance. These variations reflect the differential constraint complexity inherent to each prosodic category: Jaathi and Vupajaathi classes lack aksharam count constraints (for the current types of padyams), while Vupajaathi additionally omits prasa requirements (for the current types of padyams), resulting in modified evaluation profiles for these categories. The class-wise and type-wise analysis provides insights into the algorithm's effectiveness across the diverse landscape of Telugu metrical poetry and identifies specific areas for future algorithmic refinement.
+
+\section{Conclusion}
+This work introduces the first comprehensive computational framework for Telugu chandassu analysis, comprising four key contributions: a curated dataset of 4,651 LaghuvuGuruvu-annotated padyams, AksharamTokenizer for prosodic-aware tokenization, an algorithmic approach for automated metrical analysis, and Chandassu Score for quantitative evaluation. Our algorithm achieves a benchmark Chandassu Score of 91.73\%, establishing foundational performance metrics for Telugu computational prosody. The framework addresses critical gaps in Telugu computational linguistics while providing essential resources for literary analysis, digital humanities research, and prosodic pattern recognition. 
+
+The proposed computational framework facilitates diverse applications across literary and linguistic research domains. Contemporary poets can leverage the system for real-time metrical validation during composition, while literary scholars gain quantitative tools for systematic analysis of historical poetry corpora. Computational linguists benefit from standardized resources for prosodic research, and educational institutions can integrate the framework into Telugu language pedagogy. Future work will extend the system to handle sandhi phenomena, enabling more sophisticated phonological analysis and broader applicability to classical Telugu texts.
+
+
+\begin{acknowledgments}
+We acknowledge Sesha Sai Vadapalli and Kalepu Nagabhushana Rao for their invaluable contributions in curating and maintaining the extensive Telugu literature collection on andhrabharati.com, which served as the primary data source for this research. We thank Appana Mohan Naga Phani Kumar for proofreading this article. We express sincere gratitude to our parents and family members for their continuous support throughout this work. This research is conducted with the blessings of Sri Ramalinga Chowdeswari Devi. 
+\end{acknowledgments}
+
+\bibliographystyle{compling}
+\bibliography{COLI_template}
+
+\end{document}
