@@ -3,13 +3,16 @@
 # chandassu
 Open-source python library implementing Telugu Chandassu.
 
+# Benchmarks
+Our proposed algorithm achieved SOTA Chandassu Score of **91.22%**.
 
-## Usage
-Install using 
+#### Usage
+Install package using
 ```py
 pip install chandassu
 ```
 
+Check padyam
 ```py
 from chandassu.laghuvu_guruvu import LaghuvuGuruvu
 from chandassu.padya_bhedam import check_padyam
