@@ -1,10 +1,16 @@
 ![plot](https://drive.google.com/uc?id=1izDz9LpCTmCMPUwNM7WMy4hTDNXgzrHF)
 
 # chandassu
-Open-source python library implementing Telugu Chandassu.
+First ever Python library implementing "Telugu Chandassu".
 
 # Benchmarks
-Our proposed algorithm achieved SOTA Chandassu Score of **91.22%**.
+**Performance evaluation across prosodic classes**
+![plot](https://drive.google.com/uc?id=1ezFq499XMOb2VRgy_J5XIwbtqkndL3OG)
+ 
+**Performance evaluation across padyam types**
+![plot](https://drive.google.com/uc?id=1iwld2P1fQRijTmbYZHRbH7NkVX2GLKP0)
+
+Our algorithm achieves **91.73% accuracy** on the proposed Chandassu Score.
 
 #### Usage
 Install package using
