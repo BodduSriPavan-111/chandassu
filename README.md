@@ -1,6 +1,6 @@
 ![plot](https://drive.google.com/uc?id=1izDz9LpCTmCMPUwNM7WMy4hTDNXgzrHF)
 
-# chandassu
+# Chandassu | తెలుగు చంధస్సు
 Python library implementing "Chandassu", metrical poetry in Telugu Language (తెలుగు చంధస్సు).
 
 ## Benchmarks
