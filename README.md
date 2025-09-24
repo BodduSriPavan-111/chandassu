@@ -34,7 +34,7 @@ score= check_padyam(
 
 print(scores)
 ```
-# Computational Architecture
+## Computational Architecture
 ![plot](https://drive.google.com/uc?id=1uC_zetHMhVozM6PNgW5J0Hd1V5_v_xRC)
 
 - **nidhi.py:** Telugu alphabet classification with phonological categorizations </br>
@@ -45,13 +45,16 @@ print(scores)
 - **check_lakshanam.py:** Validation module for yati (caesura) and prasa (alliteration) </br>
 - **padya_bhedam.py:** Main integration module for metrical assessment and evaluation </br>
 
-
 ## Notebooks:
 1. web_scrapping.ipynb: Scraper scripts to collect data from andhrabharati.com
 2. Data_Analysis.ipynb: Analyzes data using different visualizations
 3. Chandassu_Generation.ipynb: Generates chandassu for the scraped data
 4. Score_Generation.ipynb: Computes scores by after chandassu generation
 5. Accuracy_Evaluation.ipynb: Benchmarking and accuracy (Chandassu Score) evaluation
+
+## Eager to Contribute?
+Any data, features, refactoring or **your innovative thought**, please check <a href="">here</a>
+
 
 ## Acknowledgements
 Special thanks to Sesha Sai Vadapalli and Kalepu Nagabhushana Rao, maintainers of [andhrabharati.com.](https://andhrabharati.com/). </br>
