@@ -12,7 +12,7 @@ Python library implementing "Chandassu", metrical poetry in Telugu Language (త
 
 Our algorithm achieves **91.73% accuracy** on the proposed Chandassu Score.
 
-#### Usage
+## Usage
 Install package using
 ```py
 pip install chandassu
@@ -70,3 +70,5 @@ This work was undertaken with the grace of Sri Ramalinga Chowdeswari Devi.
 
 ## Citation
 Goes here
+
+## Thank You !
