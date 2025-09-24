@@ -34,6 +34,9 @@ score= check_padyam(
 
 print(scores)
 ```
+# Computational Architecture
+![plot](https://drive.google.com/uc?id=1uC_zetHMhVozM6PNgW5J0Hd1V5_v_xRC)
+
 
 ## Notebooks:
 1. web_scrapping.ipynb: Scraper scripts to collect data from andhrabharati.com
@@ -43,7 +46,10 @@ print(scores)
 5. Accuracy_Evaluation.ipynb: Benchmarking and accuracy (Chandassu Score) evaluation
 
 ## Acknowledgements
-Special thanks to Sesha Sai Vadapalli and Kalepu Nagabhushana Rao, maintainers of andhrabharati.com.
+Special thanks to Sesha Sai Vadapalli and Kalepu Nagabhushana Rao, maintainers of [andhrabharati.com.](https://andhrabharati.com/). </br>
+Appana Mohan Naga Phani Kumar for proofreading our article. </br>
+Sincere gratitude to our parents and family members for their continuous support throughout this work. </br>
+This work was undertaken with the grace of Sri Ramalinga Chowdeswari Devi.
 
 ## Citation
 Goes here
