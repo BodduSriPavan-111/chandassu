@@ -53,7 +53,7 @@ print(scores)
 5. Accuracy_Evaluation.ipynb: Benchmarking and accuracy (Chandassu Score) evaluation
 
 ## Eager to Contribute?
-Any data, features, refactoring or **your innovative thought**, please check <a href="">here</a>
+Any data, features, refactoring or **your innovative thought**, please check <a href= "https://github.com/BodduSriPavan-111/chandassu/blob/main/CONTRIBUTING.md">here</a>.
 
 
 ## Acknowledgements
