@@ -37,6 +37,14 @@ print(scores)
 # Computational Architecture
 ![plot](https://drive.google.com/uc?id=1uC_zetHMhVozM6PNgW5J0Hd1V5_v_xRC)
 
+- **nidhi.py:** Telugu alphabet classification with phonological categorizations </br>
+- **panimuttu.py:** Vowel-consonant operations utility functions </br>
+- **laghuvu_guruvu.py:** Prosodic analysis engine with tokenizer and syllabic weight classifier </br>
+- **ganam.py:** Pattern repository mapping LaghuvuGuruvu sequences to metrical units </br>
+- **padyam_config.py:** Configuration database for padyam type constraints and rules </br>
+- **check_lakshanam.py:** Validation module for yati (caesura) and prasa (alliteration) </br>
+- **padya_bhedam.py:** Main integration module for metrical assessment and evaluation </br>
+
 
 ## Notebooks:
 1. web_scrapping.ipynb: Scraper scripts to collect data from andhrabharati.com
