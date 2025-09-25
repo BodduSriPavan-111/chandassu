@@ -1,6 +1,5 @@
 ![plot](https://drive.google.com/uc?id=1izDz9LpCTmCMPUwNM7WMy4hTDNXgzrHF)
 
-# Chandassu | తెలుగు చంధస్సు
 Python library implementing "Chandassu", metrical poetry in Telugu Language (తెలుగు చంధస్సు).
 
 ## Benchmarks
@@ -40,6 +39,7 @@ score= check_padyam(
 
 print(scores)
 ```
+
 ## Computational Architecture
 ![plot](https://drive.google.com/uc?id=1uC_zetHMhVozM6PNgW5J0Hd1V5_v_xRC)
 
