@@ -63,7 +63,7 @@ Any data, features, refactoring or **your innovative thought**, please check <a 
 
 
 ## Acknowledgements
-Special thanks to Sesha Sai Vadapalli and Kalepu Nagabhushana Rao, maintainers of [andhrabharati.com.](https://andhrabharati.com/). </br>
+Special thanks to Sesha Sai Vadapalli and Kalepu Nagabhushana Rao, maintainers of [andhrabharati.com](https://andhrabharati.com/). </br>
 Appana Mohan Naga Phani Kumar for proofreading our article. </br>
 Sincere gratitude to our parents and family members for their continuous support throughout this work. </br>
 This work was undertaken with the grace of Sri Ramalinga Chowdeswari Devi.
