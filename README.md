@@ -61,7 +61,6 @@ print(scores)
 ## Eager to Contribute?
 Any data, features, refactoring or **your innovative thought**, please check <a href= "https://github.com/BodduSriPavan-111/chandassu/blob/main/CONTRIBUTING.md">here</a>.
 
-
 ## Acknowledgements
 Special thanks to Sesha Sai Vadapalli and Kalepu Nagabhushana Rao, maintainers of [andhrabharati.com](https://andhrabharati.com/). </br>
 Appana Mohan Naga Phani Kumar for proofreading our article. </br>
@@ -69,6 +68,14 @@ Sincere gratitude to our parents and family members for their continuous support
 This work was undertaken with the grace of Sri Ramalinga Chowdeswari Devi.
 
 ## Citation
-Goes here
+>@misc{pavan2025computationalsociallinguisticstelugu, </br>
+>      title={Computational Social Linguistics for Telugu Cultural Preservation: Novel Algorithms for Chandassu Metrical Pattern Recognition}, </br>
+>      author={Boddu Sri Pavan and Boddu Swathi Sree}, </br>
+>      year={2025}, </br>
+>      eprint={2510.01233}, </br>
+>      archivePrefix={arXiv}, </br>
+>      primaryClass={cs.CL}, </br>
+>      url={https://arxiv.org/abs/2510.01233},  </br>
+>}
 
 ## Thank You !
