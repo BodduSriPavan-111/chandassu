@@ -1,7 +1,7 @@
 ![plot](https://drive.google.com/uc?id=1izDz9LpCTmCMPUwNM7WMy4hTDNXgzrHF)
 
-Python library implementing "Chandassu", metrical poetry in Telugu Language (తెలుగు చంధస్సు).
-
+Python library implementing "Chandassu", metrical poetry in Telugu Language (తెలుగు చంధస్సు). </br>
+arXiv Preprint: [Read Here](https://arxiv.org/abs/2510.01233)
 ## Benchmarks
 **Performance evaluation across prosodic classes**
 ![plot](https://drive.google.com/uc?id=1ezFq499XMOb2VRgy_J5XIwbtqkndL3OG)
