@@ -1,0 +1,30 @@
+[project]
+name = "chandassu"
+version = "1.0.1"
+description = "First-ever Python library implementing 'Chandassu', metrical poetry in Telugu Language"
+authors = [
+    {name = "Boddu Sri Pavan", email= "boddusripavan111@gmail.com"},
+    {name = "Boddu Swathi Sree", email= "n220962@rguktn.ac.in"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy >=1.23.5, <2.0.0"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Mathematics"
+]
+
+[project.urls]
+Homepage = "https://github.com/BodduSriPavan-111/chandassu"
+Repository = "https://github.com/BodduSriPavan-111/chandassu"
+Issues = "https://github.com/BodduSriPavan-111/chandassu/issues"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.30.1"
+

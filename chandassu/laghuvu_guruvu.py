@@ -200,3 +200,37 @@ class LaghuvuGuruvu:
         # Return a list of tuples where each tuple is in the format: (Aksharam Token, Laghuvu/ Guruvu)
         # Not dict because dict donot allow multiple keys with same name
         return list(zip(l, marking))
+    
+def tokenize( data ):
+    """
+    ## Aksharam Tokenizer
+    ### This function tokenizes the input Telugu string into 'Aksharam Tokens'.
+
+    ## Attributes
+    -------------
+    1. text: list
+        - Each element corresponds to one Akharam Token for generating Laghuvu-Guruvu.
+
+    ## Returns
+    ----------
+    1. text: list
+        - Each element corresponds to one Akharam Token for generating Laghuvu-Guruvu.
+    """
+
+    return LaghuvuGuruvu(data= data).tokenize()
+
+def generate( data ):
+    """
+    ## LaghuvuGuruvu Generator
+    ### Generates Laghuvu-Guruvu for the tokenized Telugu string.
+
+    ## Returns
+    ----------
+    Return a list of tuples
+    where each tuple is in the format: (Aksharam Token, Laghuvu/ Guruvu)
+    where 
+    Aksharam Token: str
+    Laghuvu/ Guruvu: str
+    """
+
+    return LaghuvuGuruvu(data= data).generate()
