@@ -36,7 +36,7 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
         - Supported types: 'kandamu', 'aataveladi', 'teytageethi', 'seesamu', 'vutpalamaala',
                             'champakamaala', 'mattebhamu', 'saardulamu'
     3. return_micro_score: bool
-        - Set to 'True' to returns lakshanamwise scores (micro scores).
+        - Set to 'True' to return lakshanamwise scores (micro scores).
         - Default is set to 'True'.
     4. verbose: bool
         - Prints the result of each step.
