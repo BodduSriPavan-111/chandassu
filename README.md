@@ -41,7 +41,7 @@ print(scores)
 ```
 
 ## Computational Architecture
-![plot](https://drive.google.com/uc?id=1uC_zetHMhVozM6PNgW5J0Hd1V5_v_xRC)
+![plot](https://drive.google.com/uc?id=1PESl5eH4fIWEH5sOoQjHv1wSVhEV50km)
 
 - **nidhi.py:** Telugu alphabet classification with phonological categorizations </br>
 - **panimuttu.py:** Vowel-consonant operations utility functions </br>
