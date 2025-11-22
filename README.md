@@ -68,14 +68,4 @@ Sincere gratitude to our parents and family members for their continuous support
 This work was undertaken with the grace of Sri Ramalinga Chowdeswari Devi.
 
 ## Citation
->@misc{pavan2025computationalsociallinguisticstelugu, </br>
->      title={Computational Social Linguistics for Telugu Cultural Preservation: Novel Algorithms for Chandassu Metrical Pattern Recognition}, </br>
->      author={Boddu Sri Pavan and Boddu Swathi Sree}, </br>
->      year={2025}, </br>
->      eprint={2510.01233}, </br>
->      archivePrefix={arXiv}, </br>
->      primaryClass={cs.CL}, </br>
->      url={https://arxiv.org/abs/2510.01233},  </br>
->}
-
-## Thank You !
+Goes here
