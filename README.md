@@ -1,5 +1,14 @@
 ![plot](https://drive.google.com/uc?id=1izDz9LpCTmCMPUwNM7WMy4hTDNXgzrHF)
 
+<div align= "center">
+
+[![PyPI Downloads](https://static.pepy.tech/badge/chandassu)](https://pepy.tech/projects/chandassu)
+![PyPI](https://img.shields.io/pypi/v/chandassu?color=gold)
+[![arXiv](https://img.shields.io/badge/arXiv-2510.01233-b31b1b.svg)](https://arxiv.org/abs/2510.01233)
+![License](https://img.shields.io/github/license/BodduSriPavan-111/chandassu?color=green)
+
+</div>
+
 Python library implementing "Chandassu", metrical poetry in Telugu Language (తెలుగు చంధస్సు). </br>
 arXiv Preprint: [Read Here](https://arxiv.org/abs/2510.01233)
 ## Benchmarks
@@ -41,7 +50,7 @@ print(scores)
 ```
 
 ## Computational Architecture
-![plot](https://drive.google.com/uc?id=1PESl5eH4fIWEH5sOoQjHv1wSVhEV50km)
+![plot](https://drive.google.com/uc?id=11QYJbYhCnXtllPsWPj3FWwmxviDaHO_0)
 
 - **nidhi.py:** Telugu alphabet classification with phonological categorizations </br>
 - **panimuttu.py:** Vowel-consonant operations utility functions </br>
