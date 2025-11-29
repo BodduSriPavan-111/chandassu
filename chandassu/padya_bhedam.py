@@ -23,7 +23,12 @@ TYPE_TO_BHEDAM_MAP= {
 
 VRUTTAMU= ["vutpalamaala", "champakamaala", "mattebhamu", "saardulamu"]
 
-def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose= False):
+def check_padyam(
+                    lg_data, 
+                    type= "aataveladi", 
+                    weights= None,
+                    return_micro_score= True,  
+                    verbose= False):
     """
     ## Evaluates given Laghuvu-Guruvu data with given padyam type with confidence scores.
     
@@ -38,6 +43,9 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
     3. return_micro_score: bool
         - Set to 'True' to return lakshanamwise scores (micro scores).
         - Default is set to 'True'.
+    4. weights: dict
+        - Weights for eac micro score
+        - Utilized to prioritize a particular constraint during scoring
     4. verbose: bool
         - Prints the result of each step.
         - For traceability.
@@ -227,9 +235,25 @@ def check_padyam( lg_data, type= "aataveladi", return_micro_score= True, verbose
 
         score["prasa"]= max( frequency.values() )/ N_PAADALU
 
-    # Calculate 'Chandassu Score': Average of all lakshanamwise scores for given Padyam type
-    overall_score= sum(score.values()) / len(score)
+    # Calculate 'Chandassu Score': Weighted Average of all piecewise (lakshanamwise) scores for given Padyam type
+    if weights== None:
+        
+        weights= {'n_paadalu': 1.0, 'gana_kramam': 1.0, 'yati_sthanam': 1.0, 'n_aksharalu': 1.0, 'prasa': 1.0}
 
+    # Weighted average
+    fi_xi= 0
+    fi= 0
+    for i in score:
+
+        fi_xi+= weights.get(i, 1.0) * score[i]
+        fi+= weights.get(i, 1.0)
+
+    if verbose:
+        print( "Total Weighted Sum     : ", fi_xi )
+        print( "Total weights          : ", fi)
+
+    overall_score= fi_xi / fi
+    
     if return_micro_score:
             return {"chandassu_score": overall_score, "micro_score": score}
 
