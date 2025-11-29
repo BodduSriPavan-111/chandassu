@@ -1,4 +1,4 @@
-![plot](https://drive.google.com/uc?id=14-sD9zs0bccXlF9lr0yZrGvW7vV61m87)
+![plot](https://drive.google.com/uc?id=13KJTvbjMvYx9DfaPYEoLY5i0B3JsBRee)
 
 <div align= "center">
 
