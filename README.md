@@ -12,11 +12,7 @@
 Python library implementing "Chandassu", metrical poetry in Telugu Language (తెలుగు చంధస్సు). </br>
 arXiv Preprint: [Read Here](https://arxiv.org/abs/2510.01233)
 ## Benchmarks
-**Performance evaluation across prosodic classes**
-![plot](https://drive.google.com/uc?id=1ezFq499XMOb2VRgy_J5XIwbtqkndL3OG)
- 
-**Performance evaluation across padyam types**
-![plot](https://drive.google.com/uc?id=1iwld2P1fQRijTmbYZHRbH7NkVX2GLKP0)
+![plot](https://drive.google.com/uc?id=1AgPiEjLgJdUVIJV7JHdhkP5DF5YM5S9s)
 
 Our algorithm achieves **91.73% accuracy** on the proposed Chandassu Score.
 
