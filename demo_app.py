@@ -77,7 +77,7 @@ with col1:
     
     default_text = """తొండము నేక దంతమును తోరపు బొజ్జయు వామ హస్తమున్ మెండుగ మ్రోయు గజ్జెలును మెల్లని చూపులు మందహాసమున్ కొండొక గుజ్జు రూపమున కోరిన విద్యలకెల్ల నొజ్జవై యుండెడి పార్వతీ తనయ యోయి గణాధిప నీకు మ్రొక్కెదన్"""
     
-    data = st.text_area("✍️ Enter Telugu Padyam", value=default_text, height=250)
+    data = st.text_area("✍️ Enter Telugu Poem", value=default_text, height=250)
     
     type_choice = st.selectbox(
         "📘 Select Chandassu Type",
@@ -112,14 +112,20 @@ with col2:
                 f"<div class='result-box'><h1 style='text-align:center;color:#2E8B57;margin:0;'>{score['chandassu_score']*100:.2f}%</h1></div>",
                 unsafe_allow_html=True
             )
-            
+
+            updated_label= {"N Paadalu": "N Paadalu (N Lines)", 
+                            "Gana Kramam": "Gana Kramam (Syllabic Sequence)",
+                            "Yati Sthanam": "Yati Sthanam (Caesura Position)",
+                            "N Aksharalu": "N Aksharalu (N Character Tokens)",
+                            "Prasa": "Prasa (Alliteration)"
+                           }
             # Detailed Micro Scores
             st.markdown("#### 📈 Detailed Micro Scores")
             with st.container():
                 micro = score["micro_score"]
                 for metric, value in micro.items():
                     st.metric(
-                        label=metric.replace("_", " ").title(),
+                        label= updated_label[ metric.replace("_", " ").title() ],
                         value=f"{value*100:.2f}%"
                     )
             
