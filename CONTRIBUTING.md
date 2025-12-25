@@ -18,7 +18,7 @@ We welcome contributions from the community! Your expertise and insights can hel
 - **Fork** the repository to your GitHub account.
 - **Clone** your forked repository to your local machine:
 ```
-git clone https://github.com/BodduSriPavan-111/chandassu.git
+git clone https://github.com/BodduSriPavan-111/chandassu.telugu.git
 ```
 - **Create** a new branch:
 ```

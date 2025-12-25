@@ -3,8 +3,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
 
 import streamlit as st
-from chandassu.laghuvu_guruvu import LaghuvuGuruvu
-from chandassu.padya_bhedam import check_padyam
+from chandassu.telugu.laghuvu_guruvu import LaghuvuGuruvu
+from chandassu.telugu.padya_bhedam import check_padyam
 
 # ------------------- Page Config -------------------
 st.set_page_config(

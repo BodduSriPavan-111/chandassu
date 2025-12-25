@@ -10,7 +10,10 @@
 
 </div>
 
-Python library implementing "Chandassu", metrical poetry in Telugu Language (తెలుగు చంధస్సు). </br>
+Python library implementing "Chandassu", metrical poetry in global languages. </br>
+Currently supported language(s):
+- Telugu 
+
 arXiv Preprint: [Read Here](https://arxiv.org/abs/2510.01233)
 ## Benchmarks
 ![plot](https://drive.google.com/uc?id=1AgPiEjLgJdUVIJV7JHdhkP5DF5YM5S9s)
@@ -25,8 +28,8 @@ pip install chandassu
 
 Check padyam
 ```py
-from chandassu.laghuvu_guruvu import LaghuvuGuruvu
-from chandassu.padya_bhedam import check_padyam
+from chandassu.telugu.laghuvu_guruvu import LaghuvuGuruvu
+from chandassu.telugu.padya_bhedam import check_padyam
 
 data= """తొండము నేక దంతమును తోరపు బొజ్జయు వామ హస్తమున్
 మెండుగ మ్రోయు గజ్జెలును మెల్లని చూపులు మందహాసమున్
@@ -43,7 +46,7 @@ score= check_padyam(
                         verbose= False
                     )
 
-print(scores)
+print(score)
 ```
 
 ## Computational Architecture
