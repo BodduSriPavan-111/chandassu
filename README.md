@@ -7,6 +7,7 @@
 ![PyPI](https://img.shields.io/pypi/v/chandassu?color=gold)
 [![arXiv](https://img.shields.io/badge/arXiv-2510.01233-b31b1b.svg)](https://arxiv.org/abs/2510.01233)
 ![License](https://img.shields.io/github/license/BodduSriPavan-111/chandassu?color=green)
+[![Socket Badge](https://badge.socket.dev/pypi/package/chandassu/2.0.0?artifact_id=tar-gz)](https://badge.socket.dev/pypi/package/chandassu/2.0.0?artifact_id=tar-gz)
 
 </div>
 
