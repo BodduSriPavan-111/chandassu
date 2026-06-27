@@ -7,6 +7,7 @@ License: MIT
 
 from .check_lakshanam import *
 from .padyam_config import *
+from .laghuvu_guruvu import *
 
 TYPE_TO_BHEDAM_MAP= {
                         'kandamu': Jaathi,
@@ -482,4 +483,18 @@ def check_padyam(
 #         print("==========================================")
 #         print( "Given Padyam is not detected as: ", type )
 #         print( "Exception Occurred: ", str(e))
- 
+
+def find_padyam(data):
+    all_types=["kandamu","aataveladi","teytageethi","seesamu","vutpalamaala","champakamaala", "saardulamu","mattebhamu"]
+    lg_data= LaghuvuGuruvu(data= data).generate()        
+    type_score= []
+    for i in all_types:
+        score= check_padyam(
+                            lg_data= lg_data ,
+                            type= i,
+                            return_micro_score= True, 
+                            verbose= False
+                        )
+    # print(i,score)
+        type_score.append([score['chandassu_score'],i])
+    return sorted(type_score,key=lambda x:x[0],reverse= True)[0] 
