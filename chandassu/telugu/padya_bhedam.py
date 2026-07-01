@@ -45,9 +45,9 @@ def check_padyam(
         - Set to 'True' to return lakshanamwise scores (micro scores).
         - Default is set to 'True'.
     4. weights: dict
-        - Weights for eac micro score
+        - Weights for each micro score
         - Utilized to prioritize a particular constraint during scoring
-    4. verbose: bool
+    5. verbose: bool
         - Prints the result of each step.
         - For traceability.
         - Default is set to 'False'.
@@ -486,8 +486,10 @@ def check_padyam(
 
 def find_padyam( 
                     data: str,
+                    weights: dict= {'n_paadalu': 1.0, 'gana_kramam': 1.0, 'yati_sthanam': 1.0, 'n_aksharalu': 1.0, 'prasa': 1.0},
                     return_micro_score: bool= False,
-                    verbose: bool= False
+                    return_type_wise_score: bool= False,
+                    verbose: bool= False,
                 ):
     """
     ## Automatically detects the best matched padyam type
@@ -496,10 +498,17 @@ def find_padyam(
     -------------
     1. data: str
         - Telugu text
-    2. return_micro_score: bool
+    2. weights: dict
+        - Weights for each micro score
+        - Utilized to prioritize a particular constraint during scoring
+    3. return_micro_score: bool
+        - Micro scores for padyam (poem) type
         - Set to 'True' to return lakshanamwise scores (micro scores).
         - Default is set to 'True'.
-    3. verbose: bool
+    4. return_type_wise_score: bool
+        - Scores for each available padyam type (in descending order)
+        - Default is set to 'False'
+    4. verbose: bool
         - Prints the result of each step.
         - For traceability.
         - Default is set to 'False'.
@@ -520,6 +529,7 @@ def find_padyam(
         score= check_padyam(
                             lg_data= lg_data ,
                             type= i,
+                            weights= weights,
                             return_micro_score= return_micro_score, 
                             verbose= verbose
                         )
@@ -529,4 +539,7 @@ def find_padyam(
         else:
             type_score.append([score['chandassu_score'], i])
 
-    return sorted(type_score,key=lambda x:x[0],reverse= True)[0] 
+    if return_type_wise_score:
+        return sorted(type_score, key= lambda x: x[0], reverse= True)
+
+    return sorted(type_score, key= lambda x: x[0], reverse= True)[0] 
