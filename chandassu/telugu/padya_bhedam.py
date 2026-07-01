@@ -484,17 +484,49 @@ def check_padyam(
 #         print( "Given Padyam is not detected as: ", type )
 #         print( "Exception Occurred: ", str(e))
 
-def find_padyam(data):
+def find_padyam( 
+                    data: str,
+                    return_micro_score: bool= False,
+                    verbose: bool= False
+                ):
+    """
+    ## Automatically detects the best matched padyam type
+    
+    ## Parameters
+    -------------
+    1. data: str
+        - Telugu text
+    2. return_micro_score: bool
+        - Set to 'True' to return lakshanamwise scores (micro scores).
+        - Default is set to 'True'.
+    3. verbose: bool
+        - Prints the result of each step.
+        - For traceability.
+        - Default is set to 'False'.
+
+    ## Returns
+    ----------
+    Dictionary of scores (Chandassu Score and Micro Score).
+    """
+    
     all_types=["kandamu","aataveladi","teytageethi","seesamu","vutpalamaala","champakamaala", "saardulamu","mattebhamu"]
+    
     lg_data= LaghuvuGuruvu(data= data).generate()        
+    
     type_score= []
+
     for i in all_types:
+        
         score= check_padyam(
                             lg_data= lg_data ,
                             type= i,
-                            return_micro_score= True, 
-                            verbose= False
+                            return_micro_score= return_micro_score, 
+                            verbose= verbose
                         )
-    # print(i,score)
-        type_score.append([score['chandassu_score'],i])
+        
+        if return_micro_score:
+            type_score.append([score['chandassu_score'], score['micro_score'], i])
+        else:
+            type_score.append([score['chandassu_score'], i])
+
     return sorted(type_score,key=lambda x:x[0],reverse= True)[0] 
