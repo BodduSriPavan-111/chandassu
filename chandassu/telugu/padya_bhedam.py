@@ -9,6 +9,9 @@ from .check_lakshanam import *
 from .padyam_config import *
 from .laghuvu_guruvu import *
 
+import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
+
 TYPE_TO_BHEDAM_MAP= {
                         'kandamu': Jaathi,
 
@@ -489,6 +492,7 @@ def find_padyam(
                     weights: dict= {'n_paadalu': 1.0, 'gana_kramam': 1.0, 'yati_sthanam': 1.0, 'n_aksharalu': 1.0, 'prasa': 1.0},
                     return_micro_score: bool= False,
                     return_type_wise_score: bool= False,
+                    visualize_chandassu_score: bool= True,
                     verbose: bool= False,
                 ):
     """
@@ -508,7 +512,10 @@ def find_padyam(
     4. return_type_wise_score: bool
         - Scores for each available padyam type (in descending order)
         - Default is set to 'False'
-    4. verbose: bool
+    5. visualize_chandassu_score: bool
+        - Generates bar chart of chandassu score across all padyam types
+        - Default to 'True'
+    6. verbose: bool
         - Prints the result of each step.
         - For traceability.
         - Default is set to 'False'.
@@ -538,6 +545,35 @@ def find_padyam(
             type_score.append([score['chandassu_score'], score['micro_score'], i])
         else:
             type_score.append([score['chandassu_score'], i])
+
+    if visualize_chandassu_score:
+
+        scores=  [ round(100*i[0], 2) for i in type_score]
+        padyam_type = [i[1] for i in type_score]
+
+        maximum_score= max(scores)
+        minimum_score= min(scores)
+
+        colors= ["mediumseagreen" if i== maximum_score else ( "lightcoral" if i== minimum_score else "cornflowerblue") for i in scores]
+
+        plt.figure(figsize= (13,6))
+
+        bars= plt.bar(range(len(scores)), scores, color= colors, width=0.4)
+
+        plt.axhline( 100, linestyle= "--", color= "lime" )
+        plt.xticks(range(len(scores)),padyam_type)
+
+        legend_elements= [ Patch(facecolor="mediumseagreen", label="High"), Patch(facecolor="lightcoral", label="Low")]
+        plt.legend( handles= legend_elements, bbox_to_anchor= (1,1))
+
+        for bar, score in zip(bars, scores):
+            plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), f"{score}", ha="center", va="bottom")
+
+        plt.xlabel( "Type of Padyam" )
+        plt.ylabel( "Chandassu Score" )
+        plt.title( "Chandassu Score across Padyam (Poem) Types")
+        plt.show()
+
 
     if return_type_wise_score:
         return sorted(type_score, key= lambda x: x[0], reverse= True)
