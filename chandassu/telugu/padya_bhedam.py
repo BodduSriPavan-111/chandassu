@@ -529,6 +529,10 @@ def find_padyam(
     
     lg_data= LaghuvuGuruvu(data= data).generate()        
     
+    if verbose:
+        print( "All Padyam (Poem) types available: ", all_types)
+        print( "LaghuvuGuruvu Data: ", lg_data )
+
     type_score= []
 
     for i in all_types:
