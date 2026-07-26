@@ -32,6 +32,7 @@ def check_padyam(
                     type= "aataveladi", 
                     weights= None,
                     return_micro_score= True,  
+                    custom_config= {},
                     verbose= False):
     """
     ## Evaluates given Laghuvu-Guruvu data with given padyam type with confidence scores.
@@ -50,6 +51,11 @@ def check_padyam(
     4. weights: dict
         - Weights for each micro score
         - Utilized to prioritize a particular constraint during scoring
+    5. custom_config: dict
+        - Custom configuration for custom defined poem type
+        - This expects keys: "true_n_paadalu", "n_paadalu", "n_aksharalu", "gana_kramam","yati_sthanam", 
+          "yati_paadalu", "prasa", "only_generic_yati"
+        - Default is set to '{}'.
     5. verbose: bool
         - Prints the result of each step.
         - For traceability.
@@ -59,14 +65,24 @@ def check_padyam(
     ----------
     Dictionary of scores (Chandassu Score and Micro Score).
     """
+    config= {}
+
+    if custom_config== {}:
+
+        bhedam= TYPE_TO_BHEDAM_MAP[type]
+
+        if verbose:
+            print("Type: ", type)
+            print("Bhedam: ", bhedam)
+
+        config= getattr(bhedam, type, False)
     
-    bhedam= TYPE_TO_BHEDAM_MAP[type]
+    else:
+        
+        config= custom_config
 
-    if verbose:
-        print("Type: ", type)
-        print("Bhedam: ", bhedam)
-
-    config= getattr(bhedam, type, False)
+        if verbose:
+            print( "Custom congig set")
     
     # Holds Laghuvu-Guruvu data for each Paadam (Padyam line)
     # Data Format
@@ -262,7 +278,6 @@ def check_padyam(
             return {"chandassu_score": overall_score, "micro_score": score}
 
     return {"chandassu_score": overall_score}
-
 
 
 

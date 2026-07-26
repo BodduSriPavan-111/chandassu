@@ -1,6 +1,6 @@
 [project]
 name = "chandassu"
-version = "2.4.0"
+version = "2.5.0"
 description = "First-ever Python library implementing 'Chandassu', metrical poetry in Global language(s)"
 authors = [
     {name = "Boddu Sri Pavan", email = "boddusripavan111@gmail.com"},
