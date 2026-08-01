@@ -131,7 +131,7 @@ class Vruttamu:
                                     ),
                     
                     # Here (x,y)= x is the ganam number in human notation, and y is the computer index (can be '0' zero)
-                    "yati_sthanam": (4, 1), # 11 = 3X3 + 2+1
+                    "yati_sthanam": (4, 1), # 11 = 3X3 + 2
                     "yati_paadalu": (1,2,3,4),
                     "prasa": True,
                     "only_generic_yati": True
