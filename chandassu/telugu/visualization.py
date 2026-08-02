@@ -2,18 +2,19 @@ from .padyam_config import *
 from .ganam import *
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Patch
 
 
 def padyam_plot( 
                     gana_kramam,
                     figsize= (6, 6),
                     yati_sthanam= (4, 0),
+                    yati_paadaalu= (1,2,3,4),
+                    only_generic_yati= True,
                     prasa= True,
-                    include_indra_surya= False
-
-
-
+                    include_indra_surya= False,
+                    title= "Aataveladi",
+                    legend= True
 ):
 
     fig, ax = plt.subplots( figsize= figsize )
@@ -22,6 +23,8 @@ def padyam_plot(
 
     # Find maximum length of AksharamTokens for each paadam
     max_each_paadam= [ max( [ len(list(i.values())[0]) for i in gana_kramam[j] ] )    for j in range(len(gana_kramam)) ]
+
+    y_tick_index= []
 
     for k in range(len(gana_kramam)):
 
@@ -53,9 +56,26 @@ def padyam_plot(
                 
                 color= "palegreen" if lg == 'U' else "white"
 
-                # j is the vertical shift for each Aksharam Token within each paadam
-                # len(gana_kramam) - k is the shift for each paadam
 
+                hatch= ""
+                condition_1= (k+1 in yati_paadaalu and ((i==0 and j==0 ) or (i== yati_sthanam[0] - 1 and j== yati_sthanam[1])))
+                condition_2= (i==0 and j==1 and prasa== True)
+                condition_3= only_generic_yati== False
+
+                if condition_3 and condition_1:
+                    hatch= "///"
+                elif condition_1:
+                    hatch= "---"
+                
+                if condition_2:
+                    hatch= "|||"
+
+                if condition_1 and condition_2:
+                    hatch= "-|-|-|"
+                
+                # j is the vertical shift for each Aksharam Token within each paadam
+                # sum(max_each_paadam) + len(gana_kramam) -1 -  sum(max_each_paadam[:(k+1)]) - k is shift for each paadam
+            
                 temp= Rectangle( 
                                     (i, sum(max_each_paadam) + len(gana_kramam) -1 -  sum(max_each_paadam[:(k+1)]) - k +j ),   
                                     width= 1, 
@@ -64,17 +84,57 @@ def padyam_plot(
                                     edgecolor= "black",
                                     linewidth= linewidth,
                                     linestyle= linestyle,
-                                    hatch= "---" if ((i==0 and j==0 ) or (i== yati_sthanam[0] - 1 and j== yati_sthanam[1])) else "|||" if (i==0 and j==1 and prasa== True) else ""
+                                    hatch= hatch
                                 )
 
                 patches.append( temp )
 
                 count+= 1
 
+        y_tick_index.append( sum(max_each_paadam) + len(gana_kramam) -1 -  sum(max_each_paadam[:(k+1)]) - k + max_each_paadam[k]/2 )
+
     for each_patch in patches:
         ax.add_patch( each_patch )
 
     ax.relim()
     ax.autoscale_view()
+
+    plt.title( "PadyamPlot: "+ title)
+
+    if legend:
+
+        legend_elements = [
+                            Patch( facecolor='white', edgecolor= "black", linewidth= 0.5, label='Laghuvu-|'),
+                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, label='Guruvu-U'),
+
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "|||", label='Prasa (Laghuvu)'),
+                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, hatch= "|||", label='Prasa (Guruvu)'),
+
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "---", label='Yati (Laghuvu)'),
+                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, hatch= "---", label='Yati (Guruvu)'),
+
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "///", label='Prasa Yati (Laghuvu)'),
+                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, hatch= "///", label='Prasa Yati (Guruvu)'),
+
+                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 1.5, label='Surya Ganam (Guruvu)'),
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 1.5, label='Surya Ganam (Laghuvu)')
+                        ]
+
+        ax.legend(handles=legend_elements, bbox_to_anchor= (1.005, 1.01), title= "Cell Description")
+
+    max_ganams= max([len(i) for i in gana_kramam])
+
+    plt.xticks( 
+                    [i+0.5 for i in range( max_ganams )],
+                    [str(i+1) for i in range( max_ganams )]
+            )
+
+    plt.yticks(
+                    y_tick_index,
+                    [str(i+1) for i in range( len(y_tick_index) )]
+            )
+
+    plt.xlabel("Ganam")
+    plt.ylabel("Paadam")
 
     return fig, ax
