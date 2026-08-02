@@ -1,3 +1,10 @@
+"""
+Module: visualization.py
+Description: Visualization for Telugu Metrical Poetry Types
+Author: Boddu Sri Pavan
+License: MIT
+"""
+
 from .padyam_config import *
 from .ganam import *
 
