@@ -22,10 +22,11 @@ TYPE_TO_BHEDAM_MAP= {
                         'vutpalamaala': Vruttamu, 
                         'champakamaala': Vruttamu,
                         'mattebhamu': Vruttamu,
-                        'saardulamu': Vruttamu
+                        'saardulamu': Vruttamu,
+                        "mattakokila": Vruttamu
                     }
 
-VRUTTAMU= ["vutpalamaala", "champakamaala", "mattebhamu", "saardulamu"]
+VRUTTAMU= ["vutpalamaala", "champakamaala", "mattebhamu", "saardulamu", "mattakokila"]
 
 def check_padyam(
                     lg_data, 
@@ -540,7 +541,11 @@ def find_padyam(
     Dictionary of scores (Chandassu Score and Micro Score).
     """
     
-    all_types=["kandamu","aataveladi","teytageethi","seesamu","vutpalamaala","champakamaala", "saardulamu","mattebhamu"]
+    all_types=[
+                "kandamu",
+                "aataveladi","teytageethi","seesamu",
+                "vutpalamaala","champakamaala", "saardulamu","mattebhamu", "mattakokila"
+            ]
     
     lg_data= LaghuvuGuruvu(data= data).generate()        
     
