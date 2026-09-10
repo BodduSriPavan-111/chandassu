@@ -169,12 +169,18 @@ class Vruttamu:
                     "prasa": True,
                     "only_generic_yati": True
                 }
-
-    # Future Implementation
-    # mattakokila= {
-    #                 "n_paadalu": 4,
-    #                 "n_aksharalu": 18,
-    #                 "gana_kramam": ('ర', 'స', 'జ', 'జ', 'భ', 'ర'),
-    #                 "yati_sthanam": 11,
-    #                 "prasa": True
-    #             }
+    
+    # Reference: https://te.wikipedia.org/wiki/%E0%B0%AE%E0%B0%A4%E0%B1%8D%E0%B0%A4%E0%B0%95%E0%B1%8B%E0%B0%95%E0%B0%BF%E0%B0%B2
+    mattakokila= { 
+                    "n_paadalu": 4, 
+                    "n_aksharalu": 20, 
+                    "gana_kramam": ( ( ra_ganam, sa_ganam, ja_ganam, ja_ganam, bha_ganam, ra_ganam),   
+                                    ( ra_ganam, sa_ganam, ja_ganam, ja_ganam, bha_ganam, ra_ganam),
+                                    ( ra_ganam, sa_ganam, ja_ganam, ja_ganam, bha_ganam, ra_ganam),
+                                    ( ra_ganam, sa_ganam, ja_ganam, ja_ganam, bha_ganam, ra_ganam) ),
+                    # Here (x,y)= x is the ganam number in human notation, and y is the computer index (can be '0' zero)
+                    "yati_sthanam": (4,1), 
+                    "yati_paadalu": (1,2,3,4), 
+                    "prasa": True, 
+                    "only_generic_yati": True
+                }
