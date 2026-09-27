@@ -5,7 +5,7 @@ Currently supported versions of Chandassu with security updates:
 
 All are [![Socket Badge](https://badge.socket.dev/pypi/package/chandassu/2.0.0?artifact_id=tar-gz)](https://badge.socket.dev/pypi/package/chandassu/2.0.0?artifact_id=tar-gz)
 
-Versions: **2.5.0 (latest),** 2.4.0, 2.3.0, 2.2.0, 2.1.0, 2.0.0, 1.1.0, 1.0.2, 1.0.1, 1.0.0
+Versions: **2.7.1 (latest)**, 2.7.0, 2.6.0, 2.5.0, 2.4.0, 2.3.0, 2.2.0, 2.1.0, 2.0.0, 1.1.0, 1.0.2, 1.0.1, 1.0.0
 
 
 ## Reporting a Vulnerability
