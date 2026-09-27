@@ -123,8 +123,11 @@ def padyam_plot(
                             Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "///", label='Prasa Yati (Laghuvu)'),
                             Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, hatch= "///", label='Prasa Yati (Guruvu)'),
 
-                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 1.5, label='Surya Ganam (Guruvu)'),
-                            Patch(facecolor='white', edgecolor= "black", linewidth= 1.5, label='Surya Ganam (Laghuvu)')
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 1.5, label='Surya Ganam'),
+                            # Patch(facecolor='palegreen', edgecolor= "black", linewidth= 1.5, label='Surya Ganam (Guruvu)'),
+                            
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, linestyle= "--", label='Indra Ganam'),
+                            # Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, linestyle= "--", label='Indra Ganam (Guruvu)')
                         ]
 
         ax.legend(handles=legend_elements, bbox_to_anchor= (1.005, 1.01), title= "Cell Description")
