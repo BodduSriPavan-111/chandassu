@@ -173,7 +173,7 @@ class Vruttamu:
     # Reference: https://te.wikipedia.org/wiki/%E0%B0%AE%E0%B0%A4%E0%B1%8D%E0%B0%A4%E0%B0%95%E0%B1%8B%E0%B0%95%E0%B0%BF%E0%B0%B2
     mattakokila= { 
                     "n_paadalu": 4, 
-                    "n_aksharalu": 20, 
+                    "n_aksharalu": 18, 
                     "gana_kramam": ( ( ra_ganam, sa_ganam, ja_ganam, ja_ganam, bha_ganam, ra_ganam),   
                                     ( ra_ganam, sa_ganam, ja_ganam, ja_ganam, bha_ganam, ra_ganam),
                                     ( ra_ganam, sa_ganam, ja_ganam, ja_ganam, bha_ganam, ra_ganam),

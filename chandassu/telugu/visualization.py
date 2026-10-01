@@ -106,7 +106,9 @@ def padyam_plot(
     ax.relim()
     ax.autoscale_view()
 
-    plt.title( "PadyamPlot: "+ title)
+    if len( str(title) ) > 0:
+
+        plt.title( "PadyamPlot: "+ title)
 
     if legend:
 
@@ -114,20 +116,12 @@ def padyam_plot(
                             Patch( facecolor='white', edgecolor= "black", linewidth= 0.5, label='Laghuvu-|'),
                             Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, label='Guruvu-U'),
 
-                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "|||", label='Prasa (Laghuvu)'),
-                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, hatch= "|||", label='Prasa (Guruvu)'),
-
-                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "---", label='Yati (Laghuvu)'),
-                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, hatch= "---", label='Yati (Guruvu)'),
-
-                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "///", label='Prasa Yati (Laghuvu)'),
-                            Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, hatch= "///", label='Prasa Yati (Guruvu)'),
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "|||", label='Prasa'),
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "---", label='Yati' ),
+                            Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, hatch= "///", label='Prasa Yati'),
 
                             Patch(facecolor='white', edgecolor= "black", linewidth= 1.5, label='Surya Ganam'),
-                            # Patch(facecolor='palegreen', edgecolor= "black", linewidth= 1.5, label='Surya Ganam (Guruvu)'),
-                            
                             Patch(facecolor='white', edgecolor= "black", linewidth= 0.5, linestyle= "--", label='Indra Ganam'),
-                            # Patch(facecolor='palegreen', edgecolor= "black", linewidth= 0.5, linestyle= "--", label='Indra Ganam (Guruvu)')
                         ]
 
         ax.legend(handles=legend_elements, bbox_to_anchor= (1.005, 1.01), title= "Cell Description")
