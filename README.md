@@ -66,23 +66,35 @@ print(score)
 - **check_lakshanam.py:** Validation module for yati (caesura) and prasa (alliteration) </br>
 - **padya_bhedam.py:** Main integration module for metrical assessment and evaluation </br>
 
-## Notebooks:
-1. web_scrapping.ipynb: Scraper scripts to collect data from andhrabharati.com
-2. Data_Analysis.ipynb: Analyzes data using different visualizations
-3. Chandassu_Generation.ipynb: Generates chandassu for the scraped data
-4. Score_Generation.ipynb: Computes scores by after chandassu generation
-5. Accuracy_Evaluation.ipynb: Benchmarking and accuracy (Chandassu Score) evaluation
+## Notebooks: (in `/examples`)
+1. `web_scrapping.ipynb`: Scraper scripts to collect data from andhrabharati.com
+2. `Data_Analysis.ipynb`: Analyzes data using different visualizations
+3. `Chandassu_Generation.ipynb`: Generates chandassu for the scraped data
+4. `Score_Generation.ipynb`: Computes scores by after chandassu generation
+5. `Accuracy_Evaluation.ipynb`: Benchmarking and accuracy (Chandassu Score) evaluation
+6. `Automatic_Padyam_Find.ipynb`: find text-to-poem with graphical comparison
+6. `PadyamPlot.ipyb`: Generate metrical poem visualization
 
 ## Eager to Contribute?
 Any data, features, refactoring or **your innovative thought**, please check <a href= "https://github.com/BodduSriPavan-111/chandassu/blob/main/CONTRIBUTING.md">here</a>.
 
 ## Acknowledgements
 Special thanks to Sesha Sai Vadapalli and Kalepu Nagabhushana Rao, maintainers of [andhrabharati.com](https://andhrabharati.com/). </br>
-Appana Mohan Naga Phani Kumar for proofreading our article. </br>
+Kamatham Tharun Kumar for proofreading our article. </br>
 Sincere gratitude to our parents and family members for their continuous support throughout this work. </br>
 This work was undertaken with the grace of Sri Ramalinga Chowdeswari Devi.
 
-## Citation
+## Citation(s)
+> @misc{pavan2026nondeterministicfiniteautomatatelugu, </br>
+>      title={Non-Deterministic Finite Automata for Telugu Letters and Visualizations for Metrical Poetry},  </br>
+>      author={Boddu Sri Pavan and Chandrasheker Thummanagoti and Appana Mohan Naga Phani Kumar and Boddu Swathi Sree},  </br>
+>      year={2026},  </br>
+>      eprint={2611.18661},  </br>
+>      archivePrefix={arXiv},  </br>
+>      primaryClass={cs.CL},  </br>
+>      url={https://arxiv.org/abs/2611.18661},  </br>
+>}
+
 >@misc{pavan2025computationalsociallinguisticstelugu, </br>
 >      title={Computational Social Linguistics for Telugu Cultural Preservation: Novel Algorithms for Chandassu Metrical Pattern Recognition}, </br>
 >      author={Boddu Sri Pavan and Boddu Swathi Sree}, </br>
