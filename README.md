@@ -17,8 +17,8 @@ Currently supported language(s):
 - Telugu 
 
 **Our Research:** (latest first) </br>
-1. [Non-Deterministic Finite Automata for Telugu Letters and Visualizations for Metrical Poetry (on arXiv)](https://arxiv.org/abs/2611.18661)
-2. [Computational Social Linguistics for Telugu Cultural Preservation: Novel Algorithms for Chandassu Metrical Pattern Recognition (on arXiv)](https://arxiv.org/abs/2510.01233)</li>
+1. Non-Deterministic Finite Automata for Telugu Letters and Visualizations for Metrical Poetry [(on arXiv)](https://arxiv.org/abs/2611.18661)
+2. Computational Social Linguistics for Telugu Cultural Preservation: Novel Algorithms for Chandassu Metrical Pattern Recognition [(on arXiv)](https://arxiv.org/abs/2510.01233)</li>
 </ol>
 
 ## Benchmarks
