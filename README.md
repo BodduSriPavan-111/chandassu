@@ -16,7 +16,11 @@ Python library implementing "Chandassu", metrical poetry in global languages. </
 Currently supported language(s):
 - Telugu 
 
-arXiv Preprint: [Read Here](https://arxiv.org/abs/2510.01233)
+**Our Research:** (latest first) </br>
+1. [Non-Deterministic Finite Automata for Telugu Letters and Visualizations for Metrical Poetry (on arXiv)](https://arxiv.org/abs/2611.18661)
+2. [Computational Social Linguistics for Telugu Cultural Preservation: Novel Algorithms for Chandassu Metrical Pattern Recognition (on arXiv)](https://arxiv.org/abs/2510.01233)</li>
+</ol>
+
 ## Benchmarks
 ![plot](https://drive.google.com/uc?id=1AgPiEjLgJdUVIJV7JHdhkP5DF5YM5S9s)
 

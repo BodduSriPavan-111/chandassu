@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loan Processing System Architecture</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+
+        body {
+
+            background-color: #f8fafc;
+
+        }
+
+        .mermaid {
+
+            display: flex;
+
+            justify-content: center;
+
+        }
+
+    </style>
+
+</head>
+
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+
+        <header class="mb-8 text-center">
+
+            <h1 class="text-3xl font-bold text-slate-800">Loan Processing System</h1>
+
+            <p class="text-slate-600 mt-2">Architectural Workflow & Pressure Test Analysis</p>
+
+        </header>
+
+
+        <!-- Diagram Container -->
+
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8 overflow-x-auto">
+
+            <div class="mermaid">
+
+                graph TD
+
+                subgraph UserLayer [User Layer]
+
+                    LO[Loan Officer UI]
+
+                end
+
+
+                subgraph APILayer [API Layer]
+
+                    APIGW[API Gateway]
+
+                    AuthS[Authentication Service]
+
+                end
+
+
+                subgraph BackendLayer [Backend Layer]
+
+                    APS[Application Processing Service]
+
+                    FS[Feedback Service]
+
+                end
+
+
+                subgraph ExternalSystems [External Systems]
+
+                    CreditB[External Credit Bureau API]
+
+                    BankingSys[Internal Banking Systems]
+
+                end
+
+
+                subgraph AILayer [AI Layer]
+
+                    LLM[LLM Inference Endpoint]
+
+                end
+
+
+                subgraph DataLayer [Data Layer]
+
+                    DB[(Encrypted Database)]
+
+                    Audit[Audit & Monitoring]
+
+                end
+
+
+                %% Flows
+
+                LO -->|1. Login| APIGW
+
+                APIGW <-->|2. Authenticate| AuthS
+
+                LO -->|3. Submit Application| APIGW
+
+                APIGW --> APS
+
+                APS <-->|4. Credit Check| CreditB
+
+                APS <-->|5. Financial History| BankingSys
+
+                APS <-->|6. Risk Analysis| LLM
+
+                APS -->|7. Persist| DB
+
+                APS -->|8. Recommendation| APIGW
+
+                APIGW --> LO
+
+
+                LO -->|9. Feedback| APIGW
+
+                APIGW --> FS
+
+                FS --> DB
+
+
+                %% Logging
+
+                APIGW -.-> Audit
+
+                APS -.-> Audit
+
+                FS -.-> Audit
+
+                AuthS -.-> Audit
+
+
+                style UserLayer fill:#f0f9ff,stroke:#0ea5e9
+
+                style APILayer fill:#fdf4ff,stroke:#d946ef
+
+                style BackendLayer fill:#ecfdf5,stroke:#10b981
+
+                style ExternalSystems fill:#fff7ed,stroke:#f59e0b
+
+                style AILayer fill:#fff1f2,stroke:#e11d48
+
+                style DataLayer fill:#f8fafc,stroke:#64748b
+
+            </div>
+
+        </div>
+
+
+        <!-- Computational Thinking: Pressure Test Section -->
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div class="bg-slate-800 text-white p-6 rounded-xl shadow-md">
+
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+
+                    <span class="mr-2">🔥</span> Pressure Test: Robustness Analysis
+
+                </h2>
+
+                <div class="space-y-4 text-slate-300">
+
+                    <div>
+
+                        <h3 class="font-semibold text-white">1. External Latency Spikes</h3>
+
+                        <p class="text-sm">The <strong>APS</strong> synchronously waits for Credit Bureau and LLM responses. If either experiences a 30-second delay, the UI thread for the Loan Officer may hang or timeout. Should this be converted to an asynchronous/polling pattern?</p>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-semibold text-white">2. Atomic Data Integrity</h3>
+
+                        <p class="text-sm">If <strong>APS</strong> successfully receives a recommendation from the LLM but the <strong>Encrypted DB</strong> write fails (Step 7), does the Loan Officer still see the result (Step 8)? This creates a "ghost" application that doesn't exist in the system of record.</p>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-semibold text-white">3. PII Leakage (Security)</h3>
+
+                        <p class="text-sm">Is sensitive financial data masked before being sent to the <strong>LLM Inference Endpoint</strong>? If the LLM is a public cloud API, sending raw SSNs or account numbers violates standard financial compliance (GDPR/SOC2).</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="bg-blue-50 border border-blue-200 p-6 rounded-xl shadow-md">
+
+                <h2 class="text-xl font-bold text-blue-800 mb-4 flex items-center">
+
+                    <span class="mr-2">🧩</span> Edge-Case Challenges
+
+                </h2>
+
+                <ul class="space-y-4 list-disc list-inside text-blue-900 text-sm">
+
+                    <li><strong>Token Expiration:</strong> What happens if the Auth Token expires <em>after</em> the application is submitted but <em>before</em> the LLM returns the result?</li>
+
+                    <li><strong>LLM Hallucination:</strong> If the LLM returns malformed JSON or an "Unknown" risk score, does the APS have a deterministic fallback logic to ensure the loan isn't stuck in limbo?</li>
+
+                    <li><strong>Internal Banking System Downtime:</strong> If <code>BankingSys</code> is down for maintenance, can the system proceed with a "Provisional" recommendation, or does the entire flow fail?</li>
+
+                    <li><strong>Audit Loop-hole:</strong> If the <code>Audit</code> service fails, do we stop the business logic (fail-closed) or proceed anyway (fail-open)?</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        mermaid.initialize({ 
+
+            startOnLoad: true,
+
+            theme: 'base',
+
+            themeVariables: {
+
+                primaryColor: '#ffffff',
+
+                primaryTextColor: '#1e293b',
+
+                lineColor: '#64748b',
+
+                fontSize: '14px'
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
